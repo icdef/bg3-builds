@@ -20,7 +20,7 @@ public class GearController {
 
     @GetMapping
     @CrossOrigin
-    public List<GearDto> getGear(@Valid @RequestParam Integer act){
+    public List<GearDto> getGear(@Valid @RequestParam Integer act) {
         return gearService.getWeaponsByAct(act);
     }
 

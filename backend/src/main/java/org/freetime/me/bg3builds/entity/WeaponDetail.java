@@ -36,6 +36,7 @@ public class WeaponDetail extends BaseEntity<Long> {
     private void setAsWeaponUpdate() {
         this.type = "Weapon";
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

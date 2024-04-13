@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum EquipmentType implements TestInterface{
+public enum EquipmentType implements TestInterface {
     AMULETS("Amulets"),
     BOOTS("Boots"),
     CAMP_CLOTHING("Camp Clothing"),

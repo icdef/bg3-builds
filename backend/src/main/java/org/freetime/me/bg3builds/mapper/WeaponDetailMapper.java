@@ -1,6 +1,5 @@
 package org.freetime.me.bg3builds.mapper;
 
-import org.apache.commons.lang3.StringUtils;
 import org.freetime.me.bg3builds.dto.cargoquery.CargoQueryObjectDetailDto;
 import org.freetime.me.bg3builds.entity.WeaponDetail;
 import org.freetime.me.bg3builds.entity.enums.WeaponType;
@@ -20,7 +19,7 @@ public interface WeaponDetailMapper {
     WeaponDetail updateWeaponDetail(WeaponDetail newItem, @MappingTarget WeaponDetail toUpdate);
 
     @Named("apiWeaponTypeToEnum")
-    public static WeaponType apiWeaponTypeToEnum(String type) {
-        return Enum.valueOf(WeaponType.class, type.trim().toUpperCase().replace(' ','_'));
+    static WeaponType apiWeaponTypeToEnum(String type) {
+        return Enum.valueOf(WeaponType.class, type.trim().toUpperCase().replace(' ', '_'));
     }
 }
