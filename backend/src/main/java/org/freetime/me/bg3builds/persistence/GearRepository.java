@@ -6,5 +6,5 @@ import java.util.List;
 
 
 public interface GearRepository {
-    List<GearDto> findWeaponsByAct(Integer act);
+    List<GearDto> findWeaponsByAct(Integer act, Integer pageSize, Integer pageNumber);
 }

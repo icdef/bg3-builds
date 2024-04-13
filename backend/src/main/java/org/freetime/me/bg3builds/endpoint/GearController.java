@@ -1,6 +1,5 @@
 package org.freetime.me.bg3builds.endpoint;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.freetime.me.bg3builds.dto.GearDto;
@@ -20,8 +19,9 @@ public class GearController {
 
     @GetMapping
     @CrossOrigin
-    public List<GearDto> getGear(@Valid @RequestParam Integer act) {
-        return gearService.getWeaponsByAct(act);
+    public List<GearDto> getGear(@RequestParam Integer act, @RequestParam Integer pageSize,
+                                 @RequestParam Integer pageNumber) {
+        return gearService.getWeaponsByAct(act, pageSize, pageNumber);
     }
 
 }

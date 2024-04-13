@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum WeaponType implements TestInterface {
+public enum WeaponType implements GearEnumInterface {
     BATTLEAXES("Battleaxes"),
     CLUBS("Clubs"),
     DARTS("Darts"),

@@ -16,14 +16,18 @@ public class GearRepositoryImpl implements GearRepository {
     private final EntityManager entityManager;
 
     @Override
-    public List<GearDto> findWeaponsByAct(Integer act) {
+    public List<GearDto> findWeaponsByAct(Integer act, Integer pageSize, Integer pageNumber) {
         return entityManager.createQuery("""
                         SELECT NEW org.freetime.me.bg3builds.dto.GearDto(li.itemEffect, li.itemSource,li.itemLocation,
                         wd.name,wd.type,wd.subtype,wd.price)
-                        from LootItem li join WeaponDetail wd on li.itemName = wd.name
-                        where li.act = :act
+                                FROM LootItem li JOIN WeaponDetail wd ON li.itemName = wd.name
+                                WHERE li.act = :act
                         """
-                , GearDto.class).setParameter("act", act).getResultList();
+                        , GearDto.class)
+                .setMaxResults(pageSize)
+                .setFirstResult(pageNumber * pageSize)
+                .setParameter("act", act)
+                .getResultList();
 
     }
 }
