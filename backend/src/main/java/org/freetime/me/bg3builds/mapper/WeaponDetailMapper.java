@@ -21,6 +21,6 @@ public interface WeaponDetailMapper {
 
     @Named("apiWeaponTypeToEnum")
     public static WeaponType apiWeaponTypeToEnum(String type) {
-        return Enum.valueOf(WeaponType.class, StringUtils.deleteWhitespace(type.toUpperCase()));
+        return Enum.valueOf(WeaponType.class, type.trim().toUpperCase().replace(' ','_'));
     }
 }

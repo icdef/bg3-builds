@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum WeaponType {
+public enum WeaponType implements TestInterface{
     BATTLEAXES("Battleaxes"),
     CLUBS("Clubs"),
     DARTS("Darts"),
@@ -17,7 +17,7 @@ public enum WeaponType {
     GREATSWORDS("Greatswords"),
     HALBERDS("Halberds"),
     HAND_CROSSBOWS("Hand Crossbows"),
-    HAND_AXES("Handaxes"),
+    HANDAXES("Handaxes"),
     HEAVY_CROSSBOWS("Heavy Crossbows"),
     JAVELINS("Javelins"),
     LIGHT_CROSSBOWS("Light Crossbows"),
@@ -37,7 +37,7 @@ public enum WeaponType {
     SLINGS("Slings"),
     SPEARS("Spears"),
     TRIDENTS("Tridents"),
-    WARPICKS("Warpicks"),
+    WAR_PICKS("War Picks"),
     WARHAMMERS("Warhammers");
 
     private final String typeName;
