@@ -59,4 +59,17 @@ public class GearRepositoryImpl implements GearRepository {
                 .setParameter("act", act)
                 .getSingleResult();
     }
+
+    @Override
+    public Long countGearRowsByActByTypeKind(Integer act, String type) {
+        return entityManager.createQuery("""
+                                SELECT COUNT(*)
+                                        FROM LootItem li JOIN LootItemDetail lid ON li.itemName LIKE (lid.name || '%')
+                                        WHERE li.act = :act AND lid.type = :type
+                                """
+                        , Long.class)
+                .setParameter("act", act)
+                .setParameter("type", type)
+                .getSingleResult();
+    }
 }

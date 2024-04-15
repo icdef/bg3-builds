@@ -11,4 +11,6 @@ public interface GearRepository {
     List<GearDto> findGearByAct(Integer act, Integer pageSize, Integer pageNumber);
 
     Long countGearRowsByAct(Integer act);
+
+    Long countGearRowsByActByTypeKind(Integer act, String type);
 }

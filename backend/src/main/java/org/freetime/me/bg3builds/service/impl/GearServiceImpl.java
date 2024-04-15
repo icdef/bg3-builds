@@ -30,8 +30,8 @@ public class GearServiceImpl implements GearService {
     }
 
     public GearTableDto getGearByActByTypeKind(Integer act, String type, Integer pageSize, Integer pageNumber) {
-        List<GearDto> gearByAct = gearRepository.findGearByActByTypeKind(act, type, pageSize, pageNumber);
-        Long countGearRowsByAct = gearRepository.countGearRowsByAct(act);
-        return gearMapper.dtoToTableDto(gearByAct, countGearRowsByAct);
+        List<GearDto> gearByActByType = gearRepository.findGearByActByTypeKind(act, type, pageSize, pageNumber);
+        Long countGearRowsByActByType = gearRepository.countGearRowsByActByTypeKind(act, type);
+        return gearMapper.dtoToTableDto(gearByActByType, countGearRowsByActByType);
     }
 }
