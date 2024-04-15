@@ -3,6 +3,8 @@ package org.freetime.me.bg3builds.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.freetime.me.bg3builds.dto.GearDto;
+import org.freetime.me.bg3builds.dto.GearTableDto;
+import org.freetime.me.bg3builds.mapper.GearMapper;
 import org.freetime.me.bg3builds.persistence.GearRepository;
 import org.freetime.me.bg3builds.service.GearService;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,19 @@ import java.util.List;
 public class GearServiceImpl implements GearService {
 
     private final GearRepository gearRepository;
+    private final GearMapper gearMapper;
+
 
     @Override
-    public List<GearDto> getWeaponsByAct(Integer act, Integer pageSize, Integer pageNumber) {
-        return gearRepository.findWeaponsByAct(act, pageSize, pageNumber);
+    public GearTableDto getGearByAct(Integer act, Integer pageSize, Integer pageNumber) {
+        List<GearDto> gearByAct = gearRepository.findGearByAct(act, pageSize, pageNumber);
+        Long countGearRowsByAct = gearRepository.countGearRowsByAct(act);
+        return gearMapper.dtoToTableDto(gearByAct, countGearRowsByAct);
+    }
+
+    public GearTableDto getGearByActByTypeKind(Integer act, String type, Integer pageSize, Integer pageNumber) {
+        List<GearDto> gearByAct = gearRepository.findGearByActByTypeKind(act, type, pageSize, pageNumber);
+        Long countGearRowsByAct = gearRepository.countGearRowsByAct(act);
+        return gearMapper.dtoToTableDto(gearByAct, countGearRowsByAct);
     }
 }

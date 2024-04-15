@@ -16,11 +16,29 @@ public class GearRepositoryImpl implements GearRepository {
     private final EntityManager entityManager;
 
     @Override
-    public List<GearDto> findWeaponsByAct(Integer act, Integer pageSize, Integer pageNumber) {
+    public List<GearDto> findGearByActByTypeKind(Integer act, String type, Integer pageSize, Integer pageNumber) {
         return entityManager.createQuery("""
-                        SELECT NEW org.freetime.me.bg3builds.dto.GearDto(li.itemEffect, li.itemSource,li.itemLocation,
-                        wd.name,wd.type,wd.subtype,wd.price)
-                                FROM LootItem li JOIN WeaponDetail wd ON li.itemName = wd.name
+                                SELECT NEW org.freetime.me.bg3builds.dto.GearDto(li.itemEffect, li.itemSource,li.itemLocation,
+                                 lid.name,lid.type,lid.subtype,lid.price)
+                                 FROM LootItem li JOIN LootItemDetail lid ON li.itemName LIKE (lid.name || '%')
+                                 WHERE li.act = :act AND lid.type = :type
+                                """
+                        , GearDto.class)
+                .setMaxResults(pageSize)
+                .setFirstResult(pageNumber * pageSize)
+                .setParameter("act", act)
+                .setParameter("type", type)
+                .getResultList();
+
+    }
+
+
+    @Override
+    public List<GearDto> findGearByAct(Integer act, Integer pageSize, Integer pageNumber) {
+        return entityManager.createQuery("""
+                                        SELECT NEW org.freetime.me.bg3builds.dto.GearDto(li.itemEffect, li.itemSource,li.itemLocation,
+                                        lid.name,lid.type,lid.subtype,lid.price)
+                                        FROM LootItem li JOIN LootItemDetail lid ON li.itemName LIKE (lid.name || '%')
                                 WHERE li.act = :act
                         """
                         , GearDto.class)
@@ -28,6 +46,17 @@ public class GearRepositoryImpl implements GearRepository {
                 .setFirstResult(pageNumber * pageSize)
                 .setParameter("act", act)
                 .getResultList();
+    }
 
+    @Override
+    public Long countGearRowsByAct(Integer act) {
+        return entityManager.createQuery("""
+                                SELECT COUNT(*)
+                                        FROM LootItem li JOIN LootItemDetail lid ON li.itemName LIKE (lid.name || '%')
+                                        WHERE li.act = :act
+                                """
+                        , Long.class)
+                .setParameter("act", act)
+                .getSingleResult();
     }
 }

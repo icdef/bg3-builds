@@ -11,12 +11,9 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.freetime.me.bg3builds.dto.cargoquery.CargoQueryObjectDetailDto;
 import org.freetime.me.bg3builds.dto.cargoquery.CargoQueryObjectDto;
 import org.freetime.me.bg3builds.dto.cargoquery.CargoQueryResponseDto;
-import org.freetime.me.bg3builds.entity.EquipmentDetail;
-import org.freetime.me.bg3builds.entity.WeaponDetail;
-import org.freetime.me.bg3builds.mapper.EquipmentDetailMapper;
-import org.freetime.me.bg3builds.mapper.WeaponDetailMapper;
-import org.freetime.me.bg3builds.persistence.EquipmentDetailRepository;
-import org.freetime.me.bg3builds.persistence.WeaponDetailRepository;
+import org.freetime.me.bg3builds.entity.LootItemDetail;
+import org.freetime.me.bg3builds.mapper.LootItemDetailMapper;
+import org.freetime.me.bg3builds.persistence.LootItemDetailRepository;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -33,10 +30,8 @@ import java.util.function.Predicate;
 @RequiredArgsConstructor
 public class WikiDataGenerator {
 
-    private final WeaponDetailRepository weaponDetailRepository;
-    private final WeaponDetailMapper weaponDetailMapper;
-    private final EquipmentDetailRepository equipmentDetailRepository;
-    private final EquipmentDetailMapper equipmentDetailMapper;
+    private final LootItemDetailRepository lootItemDetailRepository;
+    private final LootItemDetailMapper lootItemDetailMapper;
     private final ObjectMapper objectMapper;
 
     @PostConstruct
@@ -50,17 +45,17 @@ public class WikiDataGenerator {
                 .build(); // defaults to GET
         try (Response response = client.newCall(request).execute()) {
             List<CargoQueryObjectDetailDto> list = getCleanedUpResultFromAPIRequest(response);
-            List<WeaponDetail> weaponDetailList = weaponDetailMapper.cargoQueryObjectDetailDtoToEntity(list);
+            List<LootItemDetail> weaponDetailList = lootItemDetailMapper.cargoQueryObjectDetailDtoToEntity(list);
 
             for (int i = 0; i < weaponDetailList.size(); i++) {
-                WeaponDetail weaponDetailNew = weaponDetailList.get(i);
-                Optional<WeaponDetail> weaponDetailOldOptional = weaponDetailRepository.findByName(weaponDetailNew.getName());
+                LootItemDetail weaponDetailNew = weaponDetailList.get(i);
+                Optional<LootItemDetail> weaponDetailOldOptional = lootItemDetailRepository.findByName(weaponDetailNew.getName());
                 if (weaponDetailOldOptional.isPresent()) {
-                    weaponDetailList.set(i, weaponDetailMapper.updateWeaponDetail(weaponDetailNew, weaponDetailOldOptional.get()));
+                    weaponDetailList.set(i, lootItemDetailMapper.updateLootItemDetail(weaponDetailNew, weaponDetailOldOptional.get()));
                 }
             }
 
-            weaponDetailRepository.saveAll(weaponDetailList);
+            lootItemDetailRepository.saveAll(weaponDetailList);
         } catch (IOException | NullPointerException e) {
             log.error(e.getMessage());
         }
@@ -88,17 +83,17 @@ public class WikiDataGenerator {
     private void handleAPIRequestForEquipment(OkHttpClient client, Request request) {
         try (Response response = client.newCall(request).execute()) {
             List<CargoQueryObjectDetailDto> list = getCleanedUpResultFromAPIRequest(response);
-            List<EquipmentDetail> equipmentDetails = equipmentDetailMapper.cargoQueryObjectDetailDtoToEntity(list);
+            List<LootItemDetail> lootItemDetails = lootItemDetailMapper.cargoQueryObjectDetailDtoToEntity(list);
 
-            for (int i = 0; i < equipmentDetails.size(); i++) {
-                EquipmentDetail equipmentDetailNew = equipmentDetails.get(i);
-                Optional<EquipmentDetail> equipmentDetailOldOptional = equipmentDetailRepository.findByName(equipmentDetailNew.getName());
+            for (int i = 0; i < lootItemDetails.size(); i++) {
+                LootItemDetail lootItemDetailNew = lootItemDetails.get(i);
+                Optional<LootItemDetail> equipmentDetailOldOptional = lootItemDetailRepository.findByName(lootItemDetailNew.getName());
                 if (equipmentDetailOldOptional.isPresent()) {
-                    equipmentDetails.set(i, equipmentDetailMapper.updateEquipmentDetail(equipmentDetailNew, equipmentDetailOldOptional.get()));
+                    lootItemDetails.set(i, lootItemDetailMapper.updateLootItemDetail(lootItemDetailNew, equipmentDetailOldOptional.get()));
                 }
             }
 
-            equipmentDetailRepository.saveAll(equipmentDetails);
+            lootItemDetailRepository.saveAll(lootItemDetails);
 
         } catch (IOException | NullPointerException e) {
             log.error(e.getMessage());

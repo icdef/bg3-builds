@@ -2,7 +2,7 @@ package org.freetime.me.bg3builds.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.freetime.me.bg3builds.entity.enums.EquipmentType;
+import org.freetime.me.bg3builds.entity.enums.GearType;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -14,7 +14,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class EquipmentDetail extends BaseEntity<Long> {
+public class LootItemDetail extends BaseEntity<Long> {
 
     @Column(unique = true)
     private String name;
@@ -23,16 +23,16 @@ public class EquipmentDetail extends BaseEntity<Long> {
     private String type;
 
     @Enumerated(EnumType.STRING)
-    private EquipmentType subtype;
+    private GearType subtype;
 
     @PrePersist
-    private void setAsEquipment() {
-        this.type = "Equipment";
+    private void setLootItemDetailType() {
+        this.type = GearType.valueOf(String.valueOf(this.subtype)).getTypeKind();
     }
 
     @PreUpdate
-    private void setAsEquipmentUpdate() {
-        this.type = "Equipment";
+    private void setLootItemDetailTypeUpdate() {
+        this.type = GearType.valueOf(String.valueOf(this.subtype)).getTypeKind();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class EquipmentDetail extends BaseEntity<Long> {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         if (!super.equals(o)) return false;
-        EquipmentDetail that = (EquipmentDetail) o;
+        LootItemDetail that = (LootItemDetail) o;
         return Objects.equals(name, that.name) && Objects.equals(price, that.price) && Objects.equals(type, that.type) && subtype == that.subtype;
     }
 

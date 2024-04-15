@@ -1,16 +1,13 @@
 package org.freetime.me.bg3builds.persistence;
 
-
-import org.freetime.me.bg3builds.entity.WeaponDetail;
+import org.freetime.me.bg3builds.entity.LootItemDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface WeaponDetailRepository extends JpaRepository<WeaponDetail, Long> {
+public interface LootItemDetailRepository extends JpaRepository<LootItemDetail, Long> {
 
-    Optional<WeaponDetail> findByName(String name);
-
-
+    Optional<LootItemDetail> findByName(String name);
 }

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.freetime.me.bg3builds.entity.enums.GearEnumInterface;
+import org.freetime.me.bg3builds.entity.enums.GearType;
 
 
 @AllArgsConstructor
@@ -28,7 +28,7 @@ public class GearDto {
     private Integer price;
 
     public GearDto(String itemEffect, String itemSource, String itemLocation, String name, String type,
-                   GearEnumInterface subtype, Integer price) {
+                   GearType subtype, Integer price) {
         this.itemEffect = itemEffect;
         this.itemSource = itemSource;
         this.itemLocation = itemLocation;
