@@ -17,9 +17,9 @@ public class GearController {
 
     @GetMapping
     @CrossOrigin
-    public GearTableDto getGear(@RequestParam Integer act, @RequestParam(required = false) String typeKind, @RequestParam Integer pageSize,
+    public GearTableDto getGear(@RequestParam Integer act, String typeKind, @RequestParam Integer pageSize,
                                 @RequestParam Integer pageNumber) {
-        if (typeKind == null)
+        if (typeKind.isBlank())
             return gearService.getGearByAct(act, pageSize, pageNumber);
 
         return gearService.getGearByActByTypeKind(act, typeKind, pageSize, pageNumber);
