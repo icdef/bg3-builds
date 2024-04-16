@@ -5,11 +5,14 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
 
 @Component
 @Slf4j
 @RequiredArgsConstructor
+@Profile("fetch-data")
 public class Datagenerator {
 
     private final LootItemGenerator lootItemGenerator;

@@ -1,7 +1,6 @@
 package org.freetime.me.bg3builds.datagen;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
@@ -61,7 +60,7 @@ public class WikiDataGenerator {
 
     }
 
-    @PostConstruct
+
     public void addEquipmentData() {
         String uri = "https://bg3.wiki/w/api.php?action=cargoquery&format=json&origin=*&errorformat=raw&limit=500&tables=equipment&fields=equipment.name%2C%20equipment.type&offset=2&utf8=1";
         String uri2 = "https://bg3.wiki/w/api.php?action=cargoquery&format=json&origin=*&errorformat=raw&limit=500&tables=equipment&fields=equipment.name%2C%20equipment.type&offset=502&utf8=1";
