@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { LootTable } from '../dto/loot';
 
-const lootBackendUrl = `${environment.backendUrl}/api/v1/gear`;
+const lootBackendUrl = `${environment.backendUrl}/api/v1/loot`;
 
 @Injectable({
   providedIn: 'root',

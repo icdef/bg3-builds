@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild, Input,OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
+import {AfterViewInit, Component, ViewChild, Input,OnChanges, SimpleChanges, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import {MatTableModule, MatTableDataSource} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -11,13 +11,16 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatTabsModule} from '@angular/material/tabs';
 import { PeriodicElement } from '../../dto/periodic-element';
 import { LootService } from '../../service/loot.service';
-import { merge, Observable, of as observableOf, pipe } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { merge, Observable, of as observableOf, pipe, Subject } from 'rxjs';
+import { catchError, map, shareReplay, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { Loot } from '../../dto/loot';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatMenuModule} from '@angular/material/menu';
 import { FormsModule } from '@angular/forms';
+import { Build } from '../../dto/build';
+import { BuildService } from '../../service/build.service';
 
 type filterMode = '' | 'Weapon' | 'Equipment'
 
@@ -26,33 +29,31 @@ type filterMode = '' | 'Weapon' | 'Equipment'
   standalone: true,
   imports: [MatTableModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, 
     MatIconModule, MatButtonModule, MatCardModule, RouterModule, MatButtonToggleModule,
-  MatTabsModule, CommonModule, MatProgressBarModule, FormsModule],
+  MatTabsModule, CommonModule, MatProgressBarModule, FormsModule, MatMenuModule],
   templateUrl: './loot-table.component.html',
   styleUrl: './loot-table.component.scss'
 })
-export class LootTableComponent implements AfterViewInit, OnChanges{
+export class LootTableComponent implements AfterViewInit, OnDestroy{
 
-  
+  private ngUnsubscribe = new Subject<void>();
+
   displayedColumns: any = [{'itemName': 'Name'}, {'itemEffect':'Item Effect'}, {'itemSource': 'Item Source'},
    {'itemLocation':'Item Location'}, {'type': 'Type'}, {'subtype': 'Subtype'}];
 
   @Input() act! :number;
+  @Input() builds!: Build[] | null;
   dataSource!:MatTableDataSource<Loot>;
   queryfilter: filterMode = '';
   totalData!: number;
   isLoading = true;
-  lootData!: Loot[]
   filterText: string = '';
-  test!: EventEmitter<PageEvent>;
+ 
   constructor(private lootService: LootService){}
+
 
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    //  this.dataSource = new MatTableDataSource<Loot>(this.data);
-  
-  }
 
   ngAfterViewInit() {
     this.paginator.page
@@ -69,18 +70,23 @@ export class LootTableComponent implements AfterViewInit, OnChanges{
         map((lootTableData) => {
           if (lootTableData == null) return [];
           this.totalData = lootTableData.total;
+          this.filterText = "";
           return lootTableData.data;
-        })
+        }),
+        takeUntil(this.ngUnsubscribe)
       )
       .subscribe((lootData) => {
-        this.filterText = "";
-        this.lootData = lootData;
-        this.dataSource = new MatTableDataSource(this.lootData);
+        this.dataSource = new MatTableDataSource(lootData);
         this.dataSource.filterPredicate = (data: Loot, filter: string) => {
       return data.itemName.toLowerCase().indexOf(filter) != -1;
     }
     this.isLoading = false;
       });
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   getTableData$(act: number, typeKind: string, pageNumber: number, pageSize: number) {

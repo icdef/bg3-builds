@@ -3,6 +3,7 @@ export interface Loot {
   itemEffect: string;
   itemSource: string;
   itemLocation: string;
+  act: number;
   lootItemDetail: LootItemDetail;
 }
 

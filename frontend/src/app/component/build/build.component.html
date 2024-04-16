@@ -1,0 +1,16 @@
+<div class="container">
+  <h1>Your Builds</h1>
+  <mat-accordion>
+    <ng-container *ngFor="let item of builds$ | async">
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{item.name}}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <p>Items here as list</p>
+      </mat-expansion-panel>
+    </ng-container>
+  </mat-accordion>
+</div>
+
