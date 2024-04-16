@@ -1,10 +1,10 @@
 package org.freetime.me.bg3builds.config;
 
 import lombok.RequiredArgsConstructor;
-import org.freetime.me.bg3builds.dto.LootItemProcessor;
 import org.freetime.me.bg3builds.entity.LootItem;
 import org.freetime.me.bg3builds.listener.JobCompletionNotificationListener;
 import org.freetime.me.bg3builds.mapper.LootItemMapper;
+import org.freetime.me.bg3builds.persistence.LootItemDetailRepository;
 import org.freetime.me.bg3builds.persistence.LootItemRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -30,7 +30,7 @@ public class BatchConfig {
     private String fileInput;
     private final LootItemRepository lootItemRepository;
     private final LootItemMapper lootItemMapper;
-
+    private final LootItemDetailRepository lootItemDetailRepository;
 
     @Bean
     public Job importLootItemsJob(JobRepository jobRepository, Step importLootItemsStep, JobCompletionNotificationListener listener) {
@@ -53,7 +53,7 @@ public class BatchConfig {
 
     @Bean
     public LootItemProcessor processor() {
-        return new LootItemProcessor(lootItemRepository, lootItemMapper);
+        return new LootItemProcessor(lootItemRepository, lootItemMapper, lootItemDetailRepository);
     }
 
     @Bean

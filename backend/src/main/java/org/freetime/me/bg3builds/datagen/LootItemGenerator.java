@@ -1,6 +1,5 @@
 package org.freetime.me.bg3builds.datagen;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
@@ -19,8 +18,8 @@ public class LootItemGenerator {
     private final JobLauncher jobLauncher;
     private final Job job;
 
-    @PostConstruct
-    public void addData() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+
+    public void createLootItems() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addDate("timestamp", Calendar.getInstance().getTime())
                 .toJobParameters();
@@ -29,5 +28,6 @@ public class LootItemGenerator {
             log.info("CSV Batch running ...");
         }
     }
+
 
 }

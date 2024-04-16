@@ -1,5 +1,6 @@
 package org.freetime.me.bg3builds.mapper;
 
+import org.freetime.me.bg3builds.dto.LootItemDetailDto;
 import org.freetime.me.bg3builds.dto.cargoquery.CargoQueryObjectDetailDto;
 import org.freetime.me.bg3builds.entity.LootItemDetail;
 import org.freetime.me.bg3builds.entity.enums.GearType;
@@ -18,9 +19,18 @@ public interface LootItemDetailMapper {
 
     LootItemDetail updateLootItemDetail(LootItemDetail newItem, @MappingTarget LootItemDetail toUpdate);
 
+    @Mapping(source = "subtype", target = "subtype", qualifiedByName = "apiGearTypeToString")
+    LootItemDetailDto entityToDto(LootItemDetail lootItemDetail);
+
     @Named("apiGearTypeToEnum")
     static GearType apiGearTypeToEnum(String type) {
         return Enum.valueOf(GearType.class, type.trim().toUpperCase().replace(' ', '_'));
     }
+
+    @Named("apiGearTypeToString")
+    static String apiGearTypeToString(GearType type) {
+        return type.getTypeName();
+    }
+
 }
 

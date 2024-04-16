@@ -1,9 +1,6 @@
 package org.freetime.me.bg3builds.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -38,6 +35,9 @@ public class LootItem extends BaseEntity<Long> {
 
     @NonNull
     private Integer act;
+
+    @ManyToOne(optional = false)
+    private LootItemDetail lootItemDetail;
 
     @Override
     public boolean equals(Object o) {

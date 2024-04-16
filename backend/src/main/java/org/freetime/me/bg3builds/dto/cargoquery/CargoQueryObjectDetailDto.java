@@ -14,8 +14,6 @@ public class CargoQueryObjectDetailDto implements Serializable {
 
     @JsonProperty("name")
     private String name;
-    @JsonProperty("price")
-    private Integer price;
     @JsonProperty("type")
     private String type;
 

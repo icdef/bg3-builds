@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
-public class GearTableDto {
-    List<GearDto> data;
-    Integer total;
+@NoArgsConstructor
+@AllArgsConstructor
+public class LootItemDetailDto {
+
+    private String type;
+
+    private String subtype;
+
 }
