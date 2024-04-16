@@ -34,7 +34,6 @@ public class WikiDataGenerator {
     private final LootItemDetailMapper lootItemDetailMapper;
     private final ObjectMapper objectMapper;
 
-    @PostConstruct
     public void addWeaponData() {
         String uri = "https://bg3.wiki/w/api.php?action=cargoquery&format=json&origin=*&limit=500&tables=weapons&fields=weapons.name%2C%20weapons.price%2C%20weapons.type%2C%20";
         OkHttpClient client = new OkHttpClient();
@@ -64,8 +63,8 @@ public class WikiDataGenerator {
 
     @PostConstruct
     public void addEquipmentData() {
-        String uri = "https://bg3.wiki/w/api.php?action=cargoquery&format=json&origin=*&errorformat=raw&limit=500&tables=equipment&fields=equipment.name%2C%20equipment.price%2C%20equipment.type&offset=2&utf8=1";
-        String uri2 = "https://bg3.wiki/w/api.php?action=cargoquery&format=json&origin=*&errorformat=raw&limit=500&tables=equipment&fields=equipment.name%2C%20equipment.price%2C%20equipment.type&offset=502&utf8=1";
+        String uri = "https://bg3.wiki/w/api.php?action=cargoquery&format=json&origin=*&errorformat=raw&limit=500&tables=equipment&fields=equipment.name%2C%20equipment.type&offset=2&utf8=1";
+        String uri2 = "https://bg3.wiki/w/api.php?action=cargoquery&format=json&origin=*&errorformat=raw&limit=500&tables=equipment&fields=equipment.name%2C%20equipment.type&offset=502&utf8=1";
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
