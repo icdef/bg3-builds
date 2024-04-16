@@ -32,9 +32,9 @@ type filterMode = '' | 'Weapon' | 'Equipment'
 })
 export class LootTableComponent implements AfterViewInit, OnChanges{
 
-  //TODO: dynamisch machen
-  displayedColumns: any = [{'name': 'Name'}, {'itemEffect':'Item Effect'}, {'itemSource': 'Item Source'},
-   {'itemLocation':'Item Location'}, {'type': 'Type'}, {'subtype': 'Subtype'}, {'price': 'Price'}];
+  
+  displayedColumns: any = [{'itemName': 'Name'}, {'itemEffect':'Item Effect'}, {'itemSource': 'Item Source'},
+   {'itemLocation':'Item Location'}, {'type': 'Type'}, {'subtype': 'Subtype'}];
 
   @Input() act! :number;
   dataSource!:MatTableDataSource<Loot>;
@@ -77,7 +77,7 @@ export class LootTableComponent implements AfterViewInit, OnChanges{
         this.lootData = lootData;
         this.dataSource = new MatTableDataSource(this.lootData);
         this.dataSource.filterPredicate = (data: Loot, filter: string) => {
-      return data.name.toLowerCase().indexOf(filter) != -1;
+      return data.itemName.toLowerCase().indexOf(filter) != -1;
     }
     this.isLoading = false;
       });
@@ -117,12 +117,21 @@ export class LootTableComponent implements AfterViewInit, OnChanges{
     return Object.keys(column)[0];
   }
 
-  getColumnValue(column: any) {
+  getColumnHeaderValue(column: any) {;
     return this.displayedColumns.find((c: any) => c[column] != undefined)[column]
+  }
+  getColumnValue(loot: any, column: any):string {
+    if (loot[column] !== undefined)
+      return loot[column];
+    return loot.lootItemDetail[column];
   }
 
   getDisplayedColumnKeys() {
     return this.displayedColumns.map((column: any) => this.getColumnKey(column));
+  }
+
+  edit(test: any){
+    console.log(test);
   }
 
 }

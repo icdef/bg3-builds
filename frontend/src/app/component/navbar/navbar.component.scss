@@ -1,5 +1,16 @@
-.nav-container {
+.navbar {
     display: flex;
-    width: 100%;
     justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    
+  }
+.spacer {
+    flex-grow: 1;
+    /* This fills the space between Item 1 and the other items */
+    min-width: 0; /* Ensures the spacer can shrink to zero width */
+    /* You can also use `flex: 1 0 0;` as a shorthand for the above two lines */
+  }
+a {
+    font-size: large;
 }

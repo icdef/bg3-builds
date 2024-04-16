@@ -1,17 +1,17 @@
 export interface Loot {
-  name: string;
+  itemName: string;
   itemEffect: string;
   itemSource: string;
   itemLocation: string;
-  type: string;
-  subtype: string;
-  price: number;
+  lootItemDetail: LootItemDetail;
 }
 
 export interface LootTable {
   data: Loot[],
-  // page: number;
-//  pageSize: number;
   total: number;
-//  total_pages: number;
+}
+
+export interface LootItemDetail {
+  type: string
+  subtype: string
 }
