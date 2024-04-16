@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum GearTypeKind {
+public enum LootItemTypeKind {
     WEAPON("Weapon"),
     EQUIPMENT("Equipment");
 

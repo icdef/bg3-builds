@@ -3,7 +3,8 @@ package org.freetime.me.bg3builds.mapper;
 import org.freetime.me.bg3builds.dto.LootItemDetailDto;
 import org.freetime.me.bg3builds.dto.cargoquery.CargoQueryObjectDetailDto;
 import org.freetime.me.bg3builds.entity.LootItemDetail;
-import org.freetime.me.bg3builds.entity.enums.GearType;
+import org.freetime.me.bg3builds.entity.enums.LootItemType;
+import org.freetime.me.bg3builds.util.EnumUtil;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -12,23 +13,23 @@ import java.util.List;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface LootItemDetailMapper {
 
-    @Mapping(source = "type", target = "subtype", qualifiedByName = "apiGearTypeToEnum")
+    @Mapping(source = "type", target = "subtype", qualifiedByName = "apiLootItemTypeToEnum")
     LootItemDetail cargoQueryObjectDetailDtoToEntity(CargoQueryObjectDetailDto cargoQueryObjectDetailDto);
 
     List<LootItemDetail> cargoQueryObjectDetailDtoToEntity(List<CargoQueryObjectDetailDto> cargoQueryObjectDetailDto);
 
     LootItemDetail updateLootItemDetail(LootItemDetail newItem, @MappingTarget LootItemDetail toUpdate);
 
-    @Mapping(source = "subtype", target = "subtype", qualifiedByName = "apiGearTypeToString")
+    @Mapping(source = "subtype", target = "subtype", qualifiedByName = "apiLootItemTypeToString")
     LootItemDetailDto entityToDto(LootItemDetail lootItemDetail);
 
-    @Named("apiGearTypeToEnum")
-    static GearType apiGearTypeToEnum(String type) {
-        return Enum.valueOf(GearType.class, type.trim().toUpperCase().replace(' ', '_'));
+    @Named("apiLootItemTypeToEnum")
+    static LootItemType apiLootItemTypeToEnum(String type) {
+        return EnumUtil.stringToEnum(type);
     }
 
-    @Named("apiGearTypeToString")
-    static String apiGearTypeToString(GearType type) {
+    @Named("apiLootItemTypeToString")
+    static String apiLootItemTypeToString(LootItemType type) {
         return type.getTypeName();
     }
 

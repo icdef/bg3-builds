@@ -10,10 +10,9 @@ import { RouterModule } from '@angular/router';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatTabsModule} from '@angular/material/tabs';
 import { PeriodicElement } from '../../dto/periodic-element';
-import { LootService } from '../../service/loot.service';
 import { merge, Observable, of as observableOf, pipe, Subject } from 'rxjs';
 import { catchError, map, shareReplay, startWith, switchMap, takeUntil } from 'rxjs/operators';
-import { Loot } from '../../dto/loot';
+import { LootItem } from '../../dto/lootItem';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
@@ -21,8 +20,11 @@ import {MatMenuModule} from '@angular/material/menu';
 import { FormsModule } from '@angular/forms';
 import { Build } from '../../dto/build';
 import { BuildService } from '../../service/build.service';
+import { LootItemService } from '../../service/loot-item.service';
 
-type filterMode = '' | 'Weapon' | 'Equipment'
+type equipmentType = 'Amulets' | 'Boots' | 'Cloaks' | 'Gloves' | 'Heavy Armour' | 'Helmets' | 'Light Armour' | 'Medium Armour' | 'Rings' | 'Shields'
+type filterValue = '' | 'Weapon' | equipmentType;
+type filterType = '' | 'type' | 'subtype';
 
 @Component({
   selector: 'app-loot-table',
@@ -39,16 +41,17 @@ export class LootTableComponent implements AfterViewInit, OnDestroy{
 
   displayedColumns: any = [{'itemName': 'Name'}, {'itemEffect':'Item Effect'}, {'itemSource': 'Item Source'},
    {'itemLocation':'Item Location'}, {'subtype': 'Subtype'}, {'type': 'Type'},];
-
+  equipmentTypes: equipmentType[] = ['Amulets', 'Boots','Cloaks','Gloves','Heavy Armour','Helmets','Light Armour','Medium Armour','Rings','Shields']
   @Input() act! :number;
   @Input() builds!: Build[] | null;
-  dataSource!:MatTableDataSource<Loot>;
-  queryfilter: filterMode = '';
+  dataSource!:MatTableDataSource<LootItem>;
+  queryFilter: filterValue = '';
+  typeFilter: filterType = '';
   totalData!: number;
   isLoading = true;
   filterText: string = '';
  
-  constructor(private lootService: LootService){}
+  constructor(private lootService: LootItemService){}
 
 
   @ViewChild(MatPaginator)
@@ -62,7 +65,8 @@ export class LootTableComponent implements AfterViewInit, OnDestroy{
         switchMap(() => {
           return this.getTableData$(
             this.act,
-            this.queryfilter,
+            this.queryFilter,
+            this.typeFilter,
             this.paginator.pageIndex,
             this.paginator.pageSize
           ).pipe(catchError(() => observableOf(null)));
@@ -77,7 +81,7 @@ export class LootTableComponent implements AfterViewInit, OnDestroy{
       )
       .subscribe((lootData) => {
         this.dataSource = new MatTableDataSource(lootData);
-        this.dataSource.filterPredicate = (data: Loot, filter: string) => {
+        this.dataSource.filterPredicate = (data: LootItem, filter: string) => {
       return data.itemName.toLowerCase().indexOf(filter) != -1;
     }
     this.isLoading = false;
@@ -89,8 +93,8 @@ export class LootTableComponent implements AfterViewInit, OnDestroy{
     this.ngUnsubscribe.complete();
   }
 
-  getTableData$(act: number, typeKind: string, pageNumber: number, pageSize: number) {
-    return this.lootService.getLoot(act, typeKind,pageNumber, pageSize);
+  getTableData$(act: number, queryFilter: string, typeKind: string, pageNumber: number, pageSize: number) {
+    return this.lootService.getLoot(act, queryFilter, typeKind, pageNumber, pageSize);
   }
 
   applyFilter(event: Event) {
@@ -104,18 +108,21 @@ export class LootTableComponent implements AfterViewInit, OnDestroy{
   }
 
   weaponOnly() {
-    this.queryfilter = 'Weapon'
+    this.typeFilter = 'type';
+    this.queryFilter = 'Weapon';
     this.paginator.pageIndex = 0;
     this.paginator.page.emit();
   }
-  equipmentOnly() {
-    this.queryfilter = 'Equipment'
+  equipmentOnly(type: filterValue) {
+    this.typeFilter = 'subtype';
+    this.queryFilter = type
     this.paginator.pageIndex = 0;
     this.paginator.page.emit();
-
   }
+  
   allData() {
-   this.queryfilter = '';
+   this.typeFilter = '';
+   this.queryFilter = '';
    this.paginator.page.emit();
   }
 

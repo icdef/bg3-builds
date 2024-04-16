@@ -1,6 +1,7 @@
 package org.freetime.me.bg3builds.persistence;
 
 import org.freetime.me.bg3builds.entity.LootItem;
+import org.freetime.me.bg3builds.entity.enums.LootItemType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,10 +19,15 @@ public interface LootItemRepository extends JpaRepository<LootItem, Long> {
 
     Long countByAct(Integer act);
 
-    Long countByActAndLootItemDetail_Type(Integer act, String type);
+    Long countByActAndLootItemDetailType(Integer act, String type);
+
+    Long countByActAndLootItemDetailSubtype(Integer act, LootItemType subtype);
 
 
     @Query("SELECT li FROM LootItem li JOIN li.lootItemDetail lid WHERE li.act = :act AND lid.type = :type")
     List<LootItem> findByActAndType(@Param("act") Integer act, @Param("type") String type, Pageable pageable);
+
+    @Query("SELECT li FROM LootItem li JOIN li.lootItemDetail lid WHERE li.act = :act AND lid.subtype = :subtype")
+    List<LootItem> findByActAndSubtype(@Param("act") Integer act, @Param("subtype") LootItemType subtype, Pageable pageable);
 
 }

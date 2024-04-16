@@ -6,6 +6,7 @@ import org.freetime.me.bg3builds.dto.LootTableDto;
 import org.freetime.me.bg3builds.mapper.LootItemMapper;
 import org.freetime.me.bg3builds.persistence.LootItemRepository;
 import org.freetime.me.bg3builds.service.LootItemService;
+import org.freetime.me.bg3builds.util.EnumUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,14 @@ public class LootItemServiceImpl implements LootItemService {
 
     @Override
     public LootTableDto getLootItemByActAndType(Integer act, String type, Integer pageSize, Integer pageNumber) {
-        Long count = lootItemRepository.countByActAndLootItemDetail_Type(act, type);
+        Long count = lootItemRepository.countByActAndLootItemDetailType(act, type);
         return lootItemMapper.dtoToTableDto(lootItemRepository.findByActAndType(act, type, PageRequest.of(pageNumber, pageSize)), count);
+    }
+
+    @Override
+    public LootTableDto getLootItemByActAndSubtype(Integer act, String subtype, Integer pageSize, Integer pageNumber) {
+        Long count = lootItemRepository.countByActAndLootItemDetailSubtype(act, EnumUtil.stringToEnum(subtype));
+        return lootItemMapper.dtoToTableDto(lootItemRepository.findByActAndSubtype(act, EnumUtil.stringToEnum(subtype),
+                PageRequest.of(pageNumber, pageSize)), count);
     }
 }

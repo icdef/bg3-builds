@@ -2,7 +2,7 @@ package org.freetime.me.bg3builds.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.freetime.me.bg3builds.entity.enums.GearType;
+import org.freetime.me.bg3builds.entity.enums.LootItemType;
 import org.hibernate.Hibernate;
 
 import java.util.Objects;
@@ -21,16 +21,16 @@ public class LootItemDetail extends BaseEntity<Long> {
     private String type;
 
     @Enumerated(EnumType.STRING)
-    private GearType subtype;
+    private LootItemType subtype;
 
     @PrePersist
     private void setLootItemDetailType() {
-        this.type = GearType.valueOf(String.valueOf(this.subtype)).getTypeKind();
+        this.type = LootItemType.valueOf(String.valueOf(this.subtype)).getTypeKind();
     }
 
     @PreUpdate
     private void setLootItemDetailTypeUpdate() {
-        this.type = GearType.valueOf(String.valueOf(this.subtype)).getTypeKind();
+        this.type = LootItemType.valueOf(String.valueOf(this.subtype)).getTypeKind();
     }
 
     @Override

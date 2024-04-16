@@ -16,12 +16,15 @@ public class LootItemController {
 
     @GetMapping
     @CrossOrigin
-    public LootTableDto getLootItems(@RequestParam Integer act, String typeKind, @RequestParam Integer pageSize,
+    public LootTableDto getLootItems(@RequestParam Integer act, @RequestParam String queryFilter,
+                                     @RequestParam String typeKind, @RequestParam Integer pageSize,
                                      @RequestParam Integer pageNumber) {
-        if (typeKind == null || typeKind.isBlank())
+        if (typeKind.equals("type") && !queryFilter.isBlank())
+            return lootItemService.getLootItemByActAndType(act, queryFilter, pageSize, pageNumber);
+        else if (typeKind.equals("subtype") && !queryFilter.isBlank())
+            return lootItemService.getLootItemByActAndSubtype(act, queryFilter, pageSize, pageNumber);
+        else
             return lootItemService.getLootItemByAct(act, pageSize, pageNumber);
-
-        return lootItemService.getLootItemByActAndType(act, typeKind, pageSize, pageNumber);
     }
 
 }

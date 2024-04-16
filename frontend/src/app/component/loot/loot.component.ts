@@ -3,8 +3,6 @@ import {MatCardModule} from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import {MatTabsModule} from '@angular/material/tabs';
 import { LootTableComponent } from '../loot-table/loot-table.component';
-import { PeriodicElement } from '../../dto/periodic-element';
-import { LootService } from '../../service/loot.service';
 import { BuildService } from '../../service/build.service';
 import { Observable, shareReplay } from 'rxjs';
 import { Build } from '../../dto/build';
