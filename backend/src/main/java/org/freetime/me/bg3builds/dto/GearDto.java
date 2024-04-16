@@ -12,6 +12,7 @@ import org.freetime.me.bg3builds.entity.enums.GearType;
 @Data
 public class GearDto {
 
+    private Long id;
     @NotNull
     private String itemEffect;
     @NotNull
@@ -27,8 +28,9 @@ public class GearDto {
     @NotNull
     private Integer price;
 
-    public GearDto(String itemEffect, String itemSource, String itemLocation, String name, String type,
+    public GearDto(Long id, String itemEffect, String itemSource, String itemLocation, String name, String type,
                    GearType subtype, Integer price) {
+        this.id = id;
         this.itemEffect = itemEffect;
         this.itemSource = itemSource;
         this.itemLocation = itemLocation;

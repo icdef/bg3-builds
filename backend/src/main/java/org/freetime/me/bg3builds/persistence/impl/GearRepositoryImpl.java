@@ -18,7 +18,7 @@ public class GearRepositoryImpl implements GearRepository {
     @Override
     public List<GearDto> findGearByActByTypeKind(Integer act, String type, Integer pageSize, Integer pageNumber) {
         return entityManager.createQuery("""
-                                SELECT NEW org.freetime.me.bg3builds.dto.GearDto(li.itemEffect, li.itemSource,li.itemLocation,
+                                SELECT NEW org.freetime.me.bg3builds.dto.GearDto(li.id,li.itemEffect, li.itemSource,li.itemLocation,
                                  lid.name,lid.type,lid.subtype,lid.price)
                                  FROM LootItem li JOIN LootItemDetail lid ON li.itemName LIKE (lid.name || '%')
                                  WHERE li.act = :act AND lid.type = :type
@@ -36,7 +36,7 @@ public class GearRepositoryImpl implements GearRepository {
     @Override
     public List<GearDto> findGearByAct(Integer act, Integer pageSize, Integer pageNumber) {
         return entityManager.createQuery("""
-                                        SELECT NEW org.freetime.me.bg3builds.dto.GearDto(li.itemEffect, li.itemSource,li.itemLocation,
+                                                        SELECT NEW org.freetime.me.bg3builds.dto.GearDto(li.id,li.itemEffect, li.itemSource,li.itemLocation,
                                         lid.name,lid.type,lid.subtype,lid.price)
                                         FROM LootItem li JOIN LootItemDetail lid ON li.itemName LIKE (lid.name || '%')
                                 WHERE li.act = :act
