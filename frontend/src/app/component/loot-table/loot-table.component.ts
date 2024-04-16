@@ -38,7 +38,7 @@ export class LootTableComponent implements AfterViewInit, OnDestroy{
   private ngUnsubscribe = new Subject<void>();
 
   displayedColumns: any = [{'itemName': 'Name'}, {'itemEffect':'Item Effect'}, {'itemSource': 'Item Source'},
-   {'itemLocation':'Item Location'}, {'type': 'Type'}, {'subtype': 'Subtype'}];
+   {'itemLocation':'Item Location'}, {'subtype': 'Subtype'}, {'type': 'Type'},];
 
   @Input() act! :number;
   @Input() builds!: Build[] | null;
