@@ -7,7 +7,7 @@ import org.freetime.me.bg3builds.service.LootItemService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/gear")
+@RequestMapping("/api/v1/loot")
 @RequiredArgsConstructor
 @Slf4j
 public class LootItemController {

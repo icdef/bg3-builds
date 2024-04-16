@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Profile("fetch-data")
 public class Datagenerator {
-
+    private final DummyBuildGenerator dummyBuildGenerator;
     private final LootItemGenerator lootItemGenerator;
     private final WikiDataGenerator wikiDataGenerator;
 
@@ -24,5 +24,6 @@ public class Datagenerator {
         wikiDataGenerator.addWeaponData();
         wikiDataGenerator.addEquipmentData();
         lootItemGenerator.createLootItems();
+        dummyBuildGenerator.generateDummyBuild();
     }
 }

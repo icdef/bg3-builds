@@ -21,6 +21,8 @@ public class LootItemDto {
     @NotNull
     private String itemLocation;
     @NotNull
+    private Integer act;
+    @NotNull
     private LootItemDetailDto lootItemDetail;
 
 }
