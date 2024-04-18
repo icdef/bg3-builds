@@ -1,3 +1,6 @@
+import { LootItemToggle } from './lootItem';
+
 export interface Build {
-    name: string
+  name: string;
+  items: LootItemToggle[];
 }

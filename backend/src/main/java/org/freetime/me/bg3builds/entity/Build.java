@@ -1,13 +1,13 @@
 package org.freetime.me.bg3builds.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.Hibernate;
 
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -20,9 +20,9 @@ public class Build extends BaseEntity<Long> {
     @NotNull
     private String name;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "build")
     @ToString.Exclude
-    private Set<LootItem> items;
+    private List<BuildLootItem> items;
 
     @Override
     public boolean equals(Object o) {

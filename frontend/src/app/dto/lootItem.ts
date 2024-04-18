@@ -1,4 +1,4 @@
-import { LootItemDetail } from "./lootItemDetail";
+import { LootItemDetail } from './lootItemDetail';
 
 export interface LootItem {
   itemName: string;
@@ -7,4 +7,8 @@ export interface LootItem {
   itemLocation: string;
   act: number;
   lootItemDetail: LootItemDetail;
+}
+
+export interface LootItemToggle extends LootItem {
+  isLooted: boolean;
 }
