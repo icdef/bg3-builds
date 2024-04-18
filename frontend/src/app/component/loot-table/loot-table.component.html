@@ -20,17 +20,14 @@
   </mat-form-field>
   <mat-button-toggle-group name="type selector" value="both">
     <mat-button-toggle (click)="allData()" value="both"
-    >All Items
-    </mat-button-toggle
-    >
+      >All Items
+    </mat-button-toggle>
     <mat-button-toggle (click)="weaponOnly()" value="bigger than 10"
-    >Weapons only
-    </mat-button-toggle
-    >
+      >Weapons only
+    </mat-button-toggle>
     <mat-button-toggle mat-button [matMenuTriggerFor]="equipmentMenu"
-    >Equipment only
-    </mat-button-toggle
-    >
+      >Equipment only
+    </mat-button-toggle>
     <mat-menu #equipmentMenu="matMenu">
       <ng-container *ngFor="let type of equipmentTypes">
         <button mat-menu-item (click)="equipmentOnly(type)">{{ type }}</button>
@@ -41,7 +38,7 @@
   <mat-paginator
     #paginator
     [length]="totalData"
-    [pageSizeOptions]="[5, 10, 20, 50, 100, 250]"
+    [pageSizeOptions]="[250, 150, 50, 20, 5]"
     showFirstLastButtons
   >
   </mat-paginator>
