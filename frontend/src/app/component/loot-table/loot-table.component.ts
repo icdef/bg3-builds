@@ -47,6 +47,7 @@ type equipmentType =
   | 'Amulets'
   | 'Boots'
   | 'Cloaks'
+  | 'Clothing'
   | 'Gloves'
   | 'Heavy Armour'
   | 'Helmets'
@@ -94,6 +95,7 @@ export class LootTableComponent implements AfterViewInit, OnDestroy {
     'Amulets',
     'Boots',
     'Cloaks',
+    'Clothing',
     'Gloves',
     'Heavy Armour',
     'Helmets',
