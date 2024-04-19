@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BuildService } from '../../service/build.service';
-import { Observable, filter, map } from 'rxjs';
+import { Observable, catchError, filter, map, tap, throwError } from 'rxjs';
 import { Build } from '../../dto/build';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -9,7 +9,7 @@ import { LootItem, LootItemToggle } from '../../dto/lootItem';
 import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-build',
@@ -66,7 +66,23 @@ export class BuildComponent implements OnInit {
       this.getColumnKey(column)
     );
   }
-  toggleSelection(lootItem: LootItemToggle) {
+  toggleSelection(
+    buildId: number,
+    lootItem: LootItemToggle,
+    check: MatCheckbox
+  ) {
     lootItem.isLooted = !lootItem.isLooted;
+    this.buildService
+      .updateLootItemLootedFlag(buildId, lootItem)
+      .pipe(
+        catchError((errr: any) => {
+          check.checked = false;
+          // revert local change
+          lootItem.isLooted = !lootItem.isLooted;
+          const err = new Error(errr);
+          return throwError(() => errr);
+        })
+      )
+      .subscribe();
   }
 }

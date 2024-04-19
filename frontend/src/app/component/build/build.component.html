@@ -15,8 +15,9 @@
             <td *matCellDef="let lootItem; let i = index">
               <mat-checkbox
                 color="primary"
-                (click)="toggleSelection(lootItem)"
+                (click)="toggleSelection(item.id, lootItem, check)"
                 [checked]="lootItem.isLooted"
+                #check
               ></mat-checkbox>
             </td>
           </ng-container>
