@@ -9,4 +9,5 @@ public interface LootItemService {
     LootTableDto getLootItemByActAndType(Integer act, String type, Integer pageSize, Integer pageNumber);
 
     LootTableDto getLootItemByActAndSubtype(Integer act, String subtype, Integer pageSize, Integer pageNumber);
+
 }

@@ -1,13 +1,13 @@
 package org.freetime.me.bg3builds.endpoint;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.freetime.me.bg3builds.dto.BuildDto;
+import org.freetime.me.bg3builds.dto.LootItemDto;
+import org.freetime.me.bg3builds.dto.LootItemToggleDto;
 import org.freetime.me.bg3builds.service.BuildService;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +23,11 @@ public class BuildController {
     @CrossOrigin
     public List<BuildDto> getBuilds() {
         return buildService.getBuilds();
+    }
+
+    @PutMapping("/{id}")
+    @CrossOrigin
+    public LootItemDto updateLootItemLootStateForBuild(@RequestBody @Valid LootItemToggleDto lootItemToggleDto, @PathVariable Long id) {
+        return buildService.updateToggleForLootItemInBuild(lootItemToggleDto.getId(), id, lootItemToggleDto.getIsLooted());
     }
 }

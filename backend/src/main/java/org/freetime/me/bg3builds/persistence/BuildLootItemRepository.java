@@ -4,5 +4,9 @@ import org.freetime.me.bg3builds.entity.BuildItemKey;
 import org.freetime.me.bg3builds.entity.BuildLootItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface BuildLootItemRepository extends JpaRepository<BuildLootItem, BuildItemKey> {
+    Optional<BuildLootItem> findByBuildIdAndLootItemId(Long buildId, Long lootItemId);
+
 }

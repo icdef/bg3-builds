@@ -4,18 +4,22 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.freetime.me.bg3builds.dto.LootTableDto;
 import org.freetime.me.bg3builds.mapper.LootItemMapper;
+import org.freetime.me.bg3builds.persistence.BuildLootItemRepository;
 import org.freetime.me.bg3builds.persistence.LootItemRepository;
 import org.freetime.me.bg3builds.service.LootItemService;
 import org.freetime.me.bg3builds.util.EnumUtil;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class LootItemServiceImpl implements LootItemService {
 
     private final LootItemRepository lootItemRepository;
+    private final BuildLootItemRepository buildLootItemRepository;
     private final LootItemMapper lootItemMapper;
 
     @Override
@@ -36,4 +40,5 @@ public class LootItemServiceImpl implements LootItemService {
         return lootItemMapper.dtoToTableDto(lootItemRepository.findByActAndSubtype(act, EnumUtil.stringToEnum(subtype),
                 PageRequest.of(pageNumber, pageSize)), count);
     }
+
 }

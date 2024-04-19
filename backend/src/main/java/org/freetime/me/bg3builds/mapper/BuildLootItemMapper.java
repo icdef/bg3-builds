@@ -7,7 +7,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(config = DefaultMapperConfig.class,
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        uses = LootItemDetailMapper.class)
 public interface BuildLootItemMapper {
 
     @Mapping(source = "lootItem.lootItemDetail", target = "lootItemDetail")
