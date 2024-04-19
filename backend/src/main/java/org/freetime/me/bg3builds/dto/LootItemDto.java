@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class LootItemDto {
 
+    @NotNull
     private Long id;
     @NotNull
     private String itemName;
