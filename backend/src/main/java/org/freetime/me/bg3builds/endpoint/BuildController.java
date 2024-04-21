@@ -4,9 +4,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.freetime.me.bg3builds.dto.BuildDto;
+import org.freetime.me.bg3builds.dto.CreateBuildDto;
 import org.freetime.me.bg3builds.dto.LootItemDto;
 import org.freetime.me.bg3builds.dto.LootItemToggleDto;
 import org.freetime.me.bg3builds.service.BuildService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,5 +31,12 @@ public class BuildController {
     @CrossOrigin
     public LootItemDto updateLootItemLootStateForBuild(@RequestBody @Valid LootItemToggleDto lootItemToggleDto, @PathVariable Long id) {
         return buildService.updateToggleForLootItemInBuild(lootItemToggleDto.getId(), id, lootItemToggleDto.getIsLooted());
+    }
+
+    @PostMapping
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.CREATED)
+    public BuildDto createBuild(@RequestBody @Valid CreateBuildDto createBuildDto) {
+        return buildService.createBuild(createBuildDto);
     }
 }
