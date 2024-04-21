@@ -1,71 +1,24 @@
 <div class="container">
-  <h1>Your Builds</h1>
-  <mat-accordion multi>
-    <ng-container *ngFor="let item of builds$ | async">
-      <mat-expansion-panel hideToggle>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{ item.name }}
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <h3>Act 1</h3>
-        <table mat-table [dataSource]="filterLootItems(item.items, 1)">
-          <ng-container matColumnDef="looted">
-            <th mat-header-cell *matHeaderCellDef>Looted</th>
-            <td *matCellDef="let lootItem; let i = index">
-              <mat-checkbox
-                color="primary"
-                (click)="toggleSelection(item.id, lootItem, check)"
-                [checked]="lootItem.isLooted"
-                #check
-              ></mat-checkbox>
-            </td>
-          </ng-container>
-          <ng-container
-            [matColumnDef]="column"
-            *ngFor="let column of getDisplayedColumnKeys()"
-          >
-            <th mat-header-cell *matHeaderCellDef>
-              {{ getColumnHeaderValue(column) }}
-            </th>
-            <td mat-cell *matCellDef="let lootItem; let i = index">
-              {{ getColumnValue(lootItem, column) }}
-            </td>
-          </ng-container>
-          <tr
-            mat-header-row
-            *matHeaderRowDef="['looted'].concat(getDisplayedColumnKeys())"
-          ></tr>
-          <tr
-            mat-row
-            *matRowDef="
-              let row;
-              columns: ['looted'].concat(getDisplayedColumnKeys())
-            "
-            [class.selected-row]="row.isLooted"
-          ></tr>
-        </table>
-
-        <h3 style="margin-top: 16px">Act 2</h3>
-        <table mat-table [dataSource]="filterLootItems(item.items, 2)" class="">
-          <ng-container
-            [matColumnDef]="column"
-            *ngFor="let column of getDisplayedColumnKeys()"
-          >
-            <th mat-header-cell *matHeaderCellDef>
-              {{ getColumnHeaderValue(column) }}
-            </th>
-            <td mat-cell *matCellDef="let lootItem">
-              {{ getColumnValue(lootItem, column) }}
-            </td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="getDisplayedColumnKeys()"></tr>
-          <tr
-            mat-row
-            *matRowDef="let row; columns: getDisplayedColumnKeys()"
-          ></tr>
-        </table>
-      </mat-expansion-panel>
-    </ng-container>
-  </mat-accordion>
+  <div class="flex-container">
+    <div class="header-container">
+      <h1>Your Builds</h1>
+      <button mat-stroked-button color="primary" (click)="openDialog()">
+        Add new build
+      </button>
+    </div>
+    <mat-accordion multi>
+      <ng-container *ngFor="let build of builds$ | async">
+        <mat-expansion-panel hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ build.name }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-build-table [act]="1" [build]="build"></app-build-table>
+          <app-build-table [act]="2" [build]="build"></app-build-table>
+          <app-build-table [act]="3" [build]="build"></app-build-table>
+        </mat-expansion-panel>
+      </ng-container>
+    </mat-accordion>
+  </div>
 </div>

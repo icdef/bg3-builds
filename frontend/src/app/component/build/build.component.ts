@@ -1,88 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BuildService } from '../../service/build.service';
-import { Observable, catchError, filter, map, tap, throwError } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import {
+  MatDialog,
+  MatDialogRef,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogTitle,
+  MatDialogContent,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { Build } from '../../dto/build';
-import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { LootItem, LootItemToggle } from '../../dto/lootItem';
-import { MatTableModule } from '@angular/material/table';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIcon } from '@angular/material/icon';
-import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
+import { BuildTableComponent } from '../build-table/build-table.component';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { BuildCreateDialogComponent } from '../dialog/build-create-dialog/build-create-dialog.component';
 
 @Component({
   selector: 'app-build',
   standalone: true,
   imports: [
     CommonModule,
-    MatCardModule,
     MatExpansionModule,
-    MatTableModule,
-    MatDividerModule,
-    MatIcon,
-    MatCheckboxModule,
+    BuildTableComponent,
+    MatButtonModule,
   ],
   templateUrl: './build.component.html',
   styleUrl: './build.component.scss',
 })
 export class BuildComponent implements OnInit {
   builds$!: Observable<Build[]>;
-
-  displayedColumns: any = [
-    { itemName: 'Name' },
-    { itemEffect: 'Item Effect' },
-    { itemSource: 'Item Source' },
-    { itemLocation: 'Item Location' },
-    { subtype: 'Subtype' },
-    { type: 'Type' },
-  ];
-
-  constructor(private buildService: BuildService) {}
-
+  constructor(private buildService: BuildService, private dialog: MatDialog) {}
+  buildName: string = '';
   ngOnInit(): void {
     this.builds$ = this.buildService.getBuilds();
   }
-  filterLootItems(items: LootItem[], act: number): LootItem[] {
-    return items.filter((item) => item.act === act);
-  }
 
-  getColumnKey(column: any) {
-    return Object.keys(column)[0];
-  }
-
-  getColumnHeaderValue(column: any) {
-    return this.displayedColumns.find((c: any) => c[column] != undefined)[
-      column
-    ];
-  }
-  getColumnValue(loot: any, column: any): string {
-    if (loot[column] !== undefined) return loot[column];
-    return loot.lootItemDetail[column];
-  }
-
-  getDisplayedColumnKeys() {
-    return this.displayedColumns.map((column: any) =>
-      this.getColumnKey(column)
-    );
-  }
-  toggleSelection(
-    buildId: number,
-    lootItem: LootItemToggle,
-    check: MatCheckbox
-  ) {
-    lootItem.isLooted = !lootItem.isLooted;
+  createNewBuild(buildName: string) {
     this.buildService
-      .updateLootItemLootedFlag(buildId, lootItem)
-      .pipe(
-        catchError((errr: any) => {
-          check.checked = false;
-          // revert local change
-          lootItem.isLooted = !lootItem.isLooted;
-          const err = new Error(errr);
-          return throwError(() => errr);
-        })
-      )
+      .createBuild({ name: buildName })
+      .pipe(tap(() => (this.builds$ = this.buildService.getBuilds())))
       .subscribe();
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(BuildCreateDialogComponent);
+    dialogRef.afterClosed().subscribe((buildName: string) => {
+      if (buildName && buildName.trim().length != 0)
+        this.createNewBuild(buildName);
+    });
   }
 }

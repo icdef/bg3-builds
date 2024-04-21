@@ -1,0 +1,37 @@
+<ng-template #noBuildsTemplate> No items yet </ng-template>
+<ng-container *ngIf="build.items.length != 0; else noBuildsTemplate">
+  <h3>Act {{ act }}</h3>
+  <table mat-table [dataSource]="filterLootItems(build.items, act)">
+    <ng-container matColumnDef="looted">
+      <th mat-header-cell *matHeaderCellDef>Looted</th>
+      <td *matCellDef="let lootItem; let i = index">
+        <mat-checkbox
+          color="primary"
+          (click)="toggleSelection(build.id, lootItem, check)"
+          [checked]="lootItem.isLooted"
+          #check
+        ></mat-checkbox>
+      </td>
+    </ng-container>
+    <ng-container
+      [matColumnDef]="column"
+      *ngFor="let column of getDisplayedColumnKeys()"
+    >
+      <th mat-header-cell *matHeaderCellDef>
+        {{ getColumnHeaderValue(column) }}
+      </th>
+      <td mat-cell *matCellDef="let lootItem; let i = index">
+        {{ getColumnValue(lootItem, column) }}
+      </td>
+    </ng-container>
+    <tr
+      mat-header-row
+      *matHeaderRowDef="['looted'].concat(getDisplayedColumnKeys())"
+    ></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: ['looted'].concat(getDisplayedColumnKeys())"
+      [class.selected-row]="row.isLooted"
+    ></tr>
+  </table>
+</ng-container>

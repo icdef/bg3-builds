@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Build } from '../dto/build';
 import { environment } from '../../environments/environment.development';
 import { LootItemToggle } from '../dto/lootItem';
+import { CreateBuildDto } from '../dto/createBuildDto';
 
 const lootBackendUrl = `${environment.backendUrl}/api/v1/builds`;
 
@@ -25,5 +26,9 @@ export class BuildService {
       `${lootBackendUrl}/${buildId}`,
       lootItemToggle
     );
+  }
+
+  public createBuild(createBuildDto: CreateBuildDto): Observable<Build> {
+    return this.http.post<Build>(lootBackendUrl, createBuildDto);
   }
 }
