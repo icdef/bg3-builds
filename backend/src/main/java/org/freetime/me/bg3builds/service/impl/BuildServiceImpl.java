@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.freetime.me.bg3builds.dto.BuildDto;
 import org.freetime.me.bg3builds.dto.CreateBuildDto;
 import org.freetime.me.bg3builds.dto.LootItemToggleDto;
+import org.freetime.me.bg3builds.dto.UpdateBuildDto;
 import org.freetime.me.bg3builds.entity.Build;
 import org.freetime.me.bg3builds.mapper.BuildMapper;
 import org.freetime.me.bg3builds.persistence.BuildRepository;
@@ -43,5 +44,19 @@ public class BuildServiceImpl implements BuildService {
         build.setName(createBuildDto.getName());
         buildValidation.isNameUnique(createBuildDto.getName());
         return buildMapper.entityToDto(buildRepository.save(build));
+    }
+
+    @Override
+    public BuildDto updateBuild(UpdateBuildDto updateBuildDto, Long buildId) {
+        Build build = buildValidation.doesBuildExist(buildId);
+        buildValidation.isNameUnique(updateBuildDto.getName());
+        build.setName(updateBuildDto.getName());
+        return buildMapper.entityToDto(buildRepository.save(build));
+    }
+
+    @Override
+    public void deleteBuild(Long buildId) {
+        Build build = buildValidation.doesBuildExist(buildId);
+        buildRepository.delete(build);
     }
 }
