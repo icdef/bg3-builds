@@ -36,6 +36,12 @@ public class BuildController {
         return buildService.updateBuild(updateBuildDto, id);
     }
 
+    @PutMapping("/{id}/addItem")
+    @CrossOrigin
+    public BuildDto addToBuild(@RequestBody @Valid LootItemDto lootItemDto, @PathVariable Long id) {
+        return buildService.addItemToBuild(lootItemDto, id);
+    }
+
     @PostMapping
     @CrossOrigin
     @ResponseStatus(HttpStatus.CREATED)
@@ -50,5 +56,11 @@ public class BuildController {
         this.buildService.deleteBuild(id);
     }
 
+    @DeleteMapping("/{id}/removeItem")
+    @CrossOrigin
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeItemFromBuild(@RequestBody @Valid LootItemDto lootItemDto, @PathVariable Long id) {
+        this.buildService.removeItemFromBuild(lootItemDto, id);
+    }
 
 }

@@ -1,10 +1,7 @@
 package org.freetime.me.bg3builds.service;
 
 
-import org.freetime.me.bg3builds.dto.BuildDto;
-import org.freetime.me.bg3builds.dto.CreateBuildDto;
-import org.freetime.me.bg3builds.dto.LootItemToggleDto;
-import org.freetime.me.bg3builds.dto.UpdateBuildDto;
+import org.freetime.me.bg3builds.dto.*;
 
 import java.util.List;
 
@@ -19,4 +16,8 @@ public interface BuildService {
     BuildDto updateBuild(UpdateBuildDto updateBuildDto, Long buildId);
 
     void deleteBuild(Long buildId);
+
+    BuildDto addItemToBuild(LootItemDto item, Long buildId);
+
+    void removeItemFromBuild(LootItemDto itemDto, Long buildId);
 }

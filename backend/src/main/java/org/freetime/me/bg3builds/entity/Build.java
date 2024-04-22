@@ -1,5 +1,6 @@
 package org.freetime.me.bg3builds.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -22,7 +23,7 @@ public class Build extends BaseEntity<Long> {
     @Column(unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "build")
+    @OneToMany(mappedBy = "build", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<BuildLootItem> items;
 

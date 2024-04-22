@@ -20,7 +20,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final ObjectMapper objectMapper;
 
-    @ExceptionHandler(value = {BuildItemNotFoundException.class, NameUniqueConstraintException.class})
+    @ExceptionHandler(value = {BuildItemNotFoundException.class,
+            NameUniqueConstraintException.class, BuildNotFoundException.class, LootItemNotFoundException.class,
+            BuildLootItemUniqueConstraintException.class, BuildLootItemNotFoundException.class})
     protected ResponseEntity<Object> handleBadRequest(RuntimeException ex, WebRequest request) {
         return handleExceptionWithStatus(ex, request, HttpStatus.BAD_REQUEST);
     }

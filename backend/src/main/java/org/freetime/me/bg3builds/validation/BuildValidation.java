@@ -18,20 +18,20 @@ public class BuildValidation {
     private final BuildRepository buildRepository;
 
 
-    public void isNameUnique(String buildName) {
+    public void checkNameUnique(String buildName) {
         Optional<Build> possibleBuild = buildRepository.findByName(buildName);
         if (possibleBuild.isPresent())
             throw new NameUniqueConstraintException(String.format("Build with name %s already exists", buildName));
     }
 
     /**
-     * Checks if build with id exists.
+     * get build with id.
      *
      * @param id
      * @return Build with id from param
      * @throws BuildNotFoundException if build not found.
      */
-    public Build doesBuildExist(Long id) {
+    public Build getBuildExistById(Long id) {
         Optional<Build> possibleBuild = buildRepository.findById(id);
         if (possibleBuild.isEmpty()) {
             throw new BuildNotFoundException("Build not found");

@@ -8,9 +8,11 @@ import org.freetime.me.bg3builds.exception.BuildItemNotFoundException;
 import org.freetime.me.bg3builds.mapper.BuildLootItemMapper;
 import org.freetime.me.bg3builds.persistence.BuildLootItemRepository;
 import org.freetime.me.bg3builds.service.BuildLootItemService;
+import org.freetime.me.bg3builds.validation.BuildLootItemValidation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +22,7 @@ import java.util.Optional;
 public class BuildLootItemServiceImpl implements BuildLootItemService {
     private final BuildLootItemRepository buildLootItemRepository;
     private final BuildLootItemMapper buildLootItemMapper;
+    private final BuildLootItemValidation buildLootItemValidation;
 
     @Override
     public LootItemToggleDto updateToggleForLootItemInBuild(Long lootItemId, Long buildId, Boolean isLootedNew) {
@@ -32,4 +35,26 @@ public class BuildLootItemServiceImpl implements BuildLootItemService {
 
         return buildLootItemMapper.toLootItem(buildLootItemRepository.save(toUpdate));
     }
+
+
+    @Override
+    public BuildLootItem save(BuildLootItem item) {
+        return buildLootItemRepository.save(item);
+    }
+
+    @Override
+    public void delete(BuildLootItem item) {
+        buildLootItemRepository.delete(item);
+    }
+
+    @Override
+    public void deleteAll(List<BuildLootItem> items) {
+        buildLootItemRepository.deleteAll(items);
+    }
+
+    @Override
+    public List<BuildLootItem> getBuildLootItemsById(Long buildId) {
+        return buildLootItemRepository.findByBuildId(buildId);
+    }
+
 }
