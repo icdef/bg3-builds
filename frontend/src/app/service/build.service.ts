@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Build } from '../dto/build';
 import { environment } from '../../environments/environment.development';
-import { LootItemToggle } from '../dto/lootItem';
+import { LootItem, LootItemToggle } from '../dto/lootItem';
 import { CreateBuild } from '../dto/createBuild';
 
 const lootBackendUrl = `${environment.backendUrl}/api/v1/builds`;
@@ -37,8 +37,19 @@ export class BuildService {
       name: name,
     });
   }
+  public addItemToBuild(item: LootItem, buildId: number): Observable<Build> {
+    return this.http.put<Build>(`${lootBackendUrl}/${buildId}/addItem`, item);
+  }
 
   public deleteBuild(buildId: number): Observable<void> {
     return this.http.delete<void>(`${lootBackendUrl}/${buildId}`);
+  }
+  public removeItemFromBuild(
+    item: LootItem,
+    buildId: number
+  ): Observable<void> {
+    return this.http.delete<void>(`${lootBackendUrl}/${buildId}/removeItem`, {
+      body: item,
+    });
   }
 }

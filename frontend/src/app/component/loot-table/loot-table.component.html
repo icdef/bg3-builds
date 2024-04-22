@@ -52,7 +52,9 @@
       </button>
       <mat-menu #menu="matMenu">
         <ng-container *ngFor="let build of builds">
-          <button mat-menu-item>{{ build.name }}</button>
+          <button (click)="addItemToBuild(lootItem, build)" mat-menu-item>
+            {{ build.name }}
+          </button>
         </ng-container>
       </mat-menu>
     </td>

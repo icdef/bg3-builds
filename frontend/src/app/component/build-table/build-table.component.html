@@ -1,10 +1,10 @@
 <ng-template #noBuildsTemplate> No items yet </ng-template>
 <ng-container *ngIf="build.items.length != 0; else noBuildsTemplate">
   <h3>Act {{ act }}</h3>
-  <table mat-table [dataSource]="filterLootItems(build.items, act)">
+  <table mat-table [dataSource]="this.dataSource">
     <ng-container matColumnDef="looted">
       <th mat-header-cell *matHeaderCellDef>Looted</th>
-      <td *matCellDef="let lootItem; let i = index">
+      <td class="center-text" *matCellDef="let lootItem; let i = index">
         <mat-checkbox
           color="primary"
           (click)="toggleSelection(build.id, lootItem, check)"
@@ -13,6 +13,7 @@
         ></mat-checkbox>
       </td>
     </ng-container>
+
     <ng-container
       [matColumnDef]="column"
       *ngFor="let column of getDisplayedColumnKeys()"
@@ -24,13 +25,31 @@
         {{ getColumnValue(lootItem, column) }}
       </td>
     </ng-container>
+
+    <ng-container matColumnDef="remove">
+      <th mat-header-cell *matHeaderCellDef>Remove item from build</th>
+      <td class="center-text" *matCellDef="let lootItem; let i = index">
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="removeItemFromBuildEvent(lootItem, build)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
     <tr
       mat-header-row
-      *matHeaderRowDef="['looted'].concat(getDisplayedColumnKeys())"
+      *matHeaderRowDef="
+        ['looted'].concat(getDisplayedColumnKeys()).concat('remove')
+      "
     ></tr>
     <tr
       mat-row
-      *matRowDef="let row; columns: ['looted'].concat(getDisplayedColumnKeys())"
+      *matRowDef="
+        let row;
+        columns: ['looted'].concat(getDisplayedColumnKeys()).concat('remove')
+      "
       [class.selected-row]="row.isLooted"
     ></tr>
   </table>

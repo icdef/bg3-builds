@@ -1,12 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatTableModule } from '@angular/material/table';
+import { MatTable, MatTableModule } from '@angular/material/table';
 import { LootItem, LootItemToggle } from '../../dto/lootItem';
-import { catchError, throwError } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
 import { BuildService } from '../../service/build.service';
 import { Build } from '../../dto/build';
+import { SnackbarService } from '../../service/snackbar.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../dialog/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-build-table',
@@ -16,11 +21,13 @@ import { Build } from '../../dto/build';
     MatTableModule,
     MatCheckboxModule,
     CommonModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   templateUrl: './build-table.component.html',
   styleUrl: './build-table.component.scss',
 })
-export class BuildTableComponent {
+export class BuildTableComponent implements OnInit {
   displayedColumns: any = [
     { itemName: 'Name' },
     { itemEffect: 'Item Effect' },
@@ -32,8 +39,18 @@ export class BuildTableComponent {
 
   @Input() build!: Build;
   @Input() act!: number;
+  @ViewChild(MatTable) table!: MatTable<LootItem>;
 
-  constructor(private readonly buildService: BuildService) {}
+  dataSource!: LootItem[];
+
+  constructor(
+    private readonly buildService: BuildService,
+    private readonly snackBarService: SnackbarService,
+    private dialog: MatDialog
+  ) {}
+  ngOnInit(): void {
+    this.dataSource = this.filterLootItems(this.build.items, this.act);
+  }
 
   filterLootItems(items: LootItem[], act: number): LootItem[] {
     return items.filter((item) => item.act === act);
@@ -76,5 +93,31 @@ export class BuildTableComponent {
         })
       )
       .subscribe();
+  }
+
+  removeItemFromBuild(item: LootItem, build: Build) {
+    this.buildService
+      .removeItemFromBuild(item, build.id)
+      .pipe(
+        tap(() => {
+          this.snackBarService.openSnackBar(
+            `Removed ${item.itemName} from ${build.name}`
+          );
+          const index = this.dataSource.indexOf(item, 0);
+          this.dataSource.splice(index, 1);
+          this.table.renderRows();
+        })
+      )
+      .subscribe();
+  }
+  removeItemFromBuildEvent(item: LootItem, build: Build) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: `Are you sure you want to remove ${item.itemName} from ${build.name}?`,
+    });
+    dialogRef.afterClosed().subscribe((confirmation: boolean) => {
+      if (confirmation) {
+        this.removeItemFromBuild(item, build);
+      }
+    });
   }
 }

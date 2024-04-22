@@ -32,8 +32,9 @@ import {
   startWith,
   switchMap,
   takeUntil,
+  tap,
 } from 'rxjs/operators';
-import { LootItem } from '../../dto/lootItem';
+import { LootItem, LootItemToggle } from '../../dto/lootItem';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -43,6 +44,7 @@ import { Build } from '../../dto/build';
 import { BuildService } from '../../service/build.service';
 import { LootItemService } from '../../service/loot-item.service';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { SnackbarService } from '../../service/snackbar.service';
 type equipmentType =
   | 'Amulets'
   | 'Boots'
@@ -114,7 +116,11 @@ export class LootTableComponent implements AfterViewInit, OnDestroy {
   isLoading = true;
   filterText: string = '';
 
-  constructor(private lootService: LootItemService) {}
+  constructor(
+    private lootService: LootItemService,
+    private buildService: BuildService,
+    private snackBarService: SnackbarService
+  ) {}
 
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
@@ -168,6 +174,19 @@ export class LootTableComponent implements AfterViewInit, OnDestroy {
       pageNumber,
       pageSize
     );
+  }
+
+  addItemToBuild(item: LootItem, build: Build) {
+    this.buildService
+      .addItemToBuild(item, build.id)
+      .pipe(
+        tap(() =>
+          this.snackBarService.openSnackBar(
+            `Added ${item.itemName} to ${build.name}`
+          )
+        )
+      )
+      .subscribe();
   }
 
   applyFilter(event: Event) {
