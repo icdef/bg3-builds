@@ -1,27 +1,27 @@
 version: '3.8'
 services:
 
-  frontend:
-    image: icdef/bg3-build-frontend:v1
-    build:
-      context: .
+  frontend-prod:
+    image: icdef/bg3-build-frontend:v2
     container_name: frontend
     depends_on:
-      - db
-      - backend
+      - db-prod
+      - backend-prod
     ports:
       - '4200:4200'
 
-  backend:
-    image: icdef/bg3-build-backend:v1
+  backend-prod:
+    image: icdef/bg3-build-backend:v3
     container_name: backend
     depends_on:
-      - db
+      - db-prod
     ports:
       - '8080:8080'
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://local_pgdb:5432/postgres
-  db:
+  #      - SPRING_PROFILES_ACTIVE=fetch-data
+
+  db-prod:
     image: postgres
     container_name: local_pgdb
     restart: always
@@ -31,7 +31,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - db:/var/lib/postgresql/data
+      - db-prod:/var/lib/postgresql/data
 
 volumes:
-  db:
+  db-prod:

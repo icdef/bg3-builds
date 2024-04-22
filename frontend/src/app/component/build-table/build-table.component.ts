@@ -30,9 +30,9 @@ import { ConfirmationDialogComponent } from '../dialog/confirmation-dialog/confi
 export class BuildTableComponent implements OnInit {
   displayedColumns: any = [
     { itemName: 'Name' },
-    { itemEffect: 'Item Effect' },
-    { itemSource: 'Item Source' },
-    { itemLocation: 'Item Location' },
+    { itemEffect: 'Effect' },
+    { itemSource: 'Source' },
+    { itemLocation: 'Location' },
     { subtype: 'Subtype' },
     { type: 'Type' },
   ];
