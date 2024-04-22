@@ -2,7 +2,7 @@
   <div class="flex-container">
     <div class="header-container">
       <h1>Your Builds</h1>
-      <button mat-stroked-button color="primary" (click)="openDialog()">
+      <button mat-stroked-button color="primary" (click)="createBuildEvent()">
         Add new build
       </button>
     </div>
@@ -13,6 +13,20 @@
             <mat-panel-title>
               {{ build.name }}
             </mat-panel-title>
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="editNameEvent($event, build.id, build.name)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="deleteBuildEvent($event, build.id, build.name)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
           </mat-expansion-panel-header>
           <app-build-table [act]="1" [build]="build"></app-build-table>
           <app-build-table [act]="2" [build]="build"></app-build-table>

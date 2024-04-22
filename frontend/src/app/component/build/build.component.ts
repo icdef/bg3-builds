@@ -18,7 +18,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { BuildCreateDialogComponent } from '../dialog/build-create-dialog/build-create-dialog.component';
+import { BuildNameDialogComponent } from '../dialog/build-name-dialog/build-name-dialog.component';
+import { MatIconModule } from '@angular/material/icon';
+import { ConfirmationDialogComponent } from '../dialog/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-build',
@@ -28,6 +30,7 @@ import { BuildCreateDialogComponent } from '../dialog/build-create-dialog/build-
     MatExpansionModule,
     BuildTableComponent,
     MatButtonModule,
+    MatIconModule,
   ],
   templateUrl: './build.component.html',
   styleUrl: './build.component.scss',
@@ -35,7 +38,6 @@ import { BuildCreateDialogComponent } from '../dialog/build-create-dialog/build-
 export class BuildComponent implements OnInit {
   builds$!: Observable<Build[]>;
   constructor(private buildService: BuildService, private dialog: MatDialog) {}
-  buildName: string = '';
   ngOnInit(): void {
     this.builds$ = this.buildService.getBuilds();
   }
@@ -47,11 +49,48 @@ export class BuildComponent implements OnInit {
       .subscribe();
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(BuildCreateDialogComponent);
+  updateBuild(buildName: string, buildId: number) {
+    this.buildService
+      .updateBuildName(buildName, buildId)
+      .pipe(tap(() => (this.builds$ = this.buildService.getBuilds())))
+      .subscribe();
+  }
+
+  deleteBuild(buildId: number) {
+    this.buildService
+      .deleteBuild(buildId)
+      .pipe(tap(() => (this.builds$ = this.buildService.getBuilds())))
+      .subscribe();
+  }
+
+  createBuildEvent(): void {
+    const dialogRef = this.dialog.open(BuildNameDialogComponent);
     dialogRef.afterClosed().subscribe((buildName: string) => {
-      if (buildName && buildName.trim().length != 0)
+      if (buildName && buildName.trim().length != 0) {
         this.createNewBuild(buildName);
+      }
+    });
+  }
+  editNameEvent(event: any, buildId: number, currentBuildName: string) {
+    event.stopPropagation();
+    const dialogRef = this.dialog.open(BuildNameDialogComponent, {
+      data: currentBuildName,
+    });
+    dialogRef.afterClosed().subscribe((buildName: string) => {
+      if (buildName && buildName.trim().length != 0) {
+        this.updateBuild(buildName, buildId);
+      }
+    });
+  }
+  deleteBuildEvent(event: any, buildId: number, buildName: string) {
+    event.stopPropagation();
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: `Are you sure you want to delete ${buildName}?`,
+    });
+    dialogRef.afterClosed().subscribe((confirmation: boolean) => {
+      if (confirmation) {
+        this.deleteBuild(buildId);
+      }
     });
   }
 }

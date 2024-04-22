@@ -42,7 +42,7 @@ import { FormsModule } from '@angular/forms';
 import { Build } from '../../dto/build';
 import { BuildService } from '../../service/build.service';
 import { LootItemService } from '../../service/loot-item.service';
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 type equipmentType =
   | 'Amulets'
   | 'Boots'
@@ -76,6 +76,7 @@ type filterType = '' | 'type' | 'subtype';
     MatProgressBarModule,
     FormsModule,
     MatMenuModule,
+    ScrollingModule,
   ],
   templateUrl: './loot-table.component.html',
   styleUrl: './loot-table.component.scss',
