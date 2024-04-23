@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { LootComponent } from './component/loot/loot.component';
@@ -13,5 +13,9 @@ import { ThemeService } from './service/theme.service';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  themeService: ThemeService = inject(ThemeService);
+  constructor(private readonly themeService: ThemeService) {}
+
+  getThemeSignal(): string {
+    return this.themeService.themeSignal();
+  }
 }
