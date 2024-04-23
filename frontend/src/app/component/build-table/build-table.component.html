@@ -1,6 +1,7 @@
 <ng-template #noBuildsTemplate> No items yet </ng-template>
-<ng-container *ngIf="build.items.length != 0; else noBuildsTemplate">
-  <h3>Act {{ act }}</h3>
+<ng-container
+  *ngIf="filterLootItems(build.items, act).length != 0; else noBuildsTemplate"
+>
   <table mat-table [dataSource]="this.dataSource">
     <ng-container matColumnDef="looted">
       <th mat-header-cell *matHeaderCellDef>Looted</th>

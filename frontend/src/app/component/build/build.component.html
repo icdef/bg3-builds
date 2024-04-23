@@ -28,9 +28,17 @@
               <mat-icon>delete</mat-icon>
             </button>
           </mat-expansion-panel-header>
-          <app-build-table [act]="1" [build]="build"></app-build-table>
-          <app-build-table [act]="2" [build]="build"></app-build-table>
-          <app-build-table [act]="3" [build]="build"></app-build-table>
+          <mat-accordion multi>
+            <mat-expansion-panel *ngFor="let actNumber of [1, 2, 3]" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Act {{ actNumber }} </mat-panel-title>
+              </mat-expansion-panel-header>
+              <app-build-table
+                [act]="actNumber"
+                [build]="build"
+              ></app-build-table>
+            </mat-expansion-panel>
+          </mat-accordion>
         </mat-expansion-panel>
       </ng-container>
     </mat-accordion>

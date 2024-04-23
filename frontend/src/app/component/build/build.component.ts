@@ -2,22 +2,11 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BuildService } from '../../service/build.service';
 import { Observable, tap } from 'rxjs';
-import {
-  MatDialog,
-  MatDialogRef,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogTitle,
-  MatDialogContent,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Build } from '../../dto/build';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { BuildTableComponent } from '../build-table/build-table.component';
 import { MatButtonModule } from '@angular/material/button';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { BuildNameDialogComponent } from '../dialog/build-name-dialog/build-name-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ConfirmationDialogComponent } from '../dialog/confirmation-dialog/confirmation-dialog.component';
@@ -38,6 +27,7 @@ import { ConfirmationDialogComponent } from '../dialog/confirmation-dialog/confi
 export class BuildComponent implements OnInit {
   builds$!: Observable<Build[]>;
   constructor(private buildService: BuildService, private dialog: MatDialog) {}
+
   ngOnInit(): void {
     this.builds$ = this.buildService.getBuilds();
   }
