@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../dialog/confirmation-dialog/confirmation-dialog.component';
+import { ThemeService } from '../../service/theme.service';
 
 @Component({
   selector: 'app-build-table',
@@ -46,7 +47,8 @@ export class BuildTableComponent implements OnInit {
   constructor(
     private readonly buildService: BuildService,
     private readonly snackBarService: SnackbarService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private readonly themeService: ThemeService
   ) {}
   ngOnInit(): void {
     this.dataSource = this.filterLootItems(this.build.items, this.act);
@@ -113,6 +115,7 @@ export class BuildTableComponent implements OnInit {
   removeItemFromBuildEvent(item: LootItem, build: Build) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: `Are you sure you want to remove ${item.itemName} from ${build.name}?`,
+      panelClass: this.themeService.themeSignal(),
     });
     dialogRef.afterClosed().subscribe((confirmation: boolean) => {
       if (confirmation) {

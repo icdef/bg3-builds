@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { BuildNameDialogComponent } from '../dialog/build-name-dialog/build-name-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
 import { ConfirmationDialogComponent } from '../dialog/confirmation-dialog/confirmation-dialog.component';
+import { ThemeService } from '../../service/theme.service';
 
 @Component({
   selector: 'app-build',
@@ -26,7 +27,11 @@ import { ConfirmationDialogComponent } from '../dialog/confirmation-dialog/confi
 })
 export class BuildComponent implements OnInit {
   builds$!: Observable<Build[]>;
-  constructor(private buildService: BuildService, private dialog: MatDialog) {}
+  constructor(
+    private buildService: BuildService,
+    private dialog: MatDialog,
+    private themeService: ThemeService
+  ) {}
 
   ngOnInit(): void {
     this.builds$ = this.buildService.getBuilds();
@@ -54,7 +59,9 @@ export class BuildComponent implements OnInit {
   }
 
   createBuildEvent(): void {
-    const dialogRef = this.dialog.open(BuildNameDialogComponent);
+    const dialogRef = this.dialog.open(BuildNameDialogComponent, {
+      panelClass: this.themeService.themeSignal(),
+    });
     dialogRef.afterClosed().subscribe((buildName: string) => {
       if (buildName && buildName.trim().length != 0) {
         this.createNewBuild(buildName);
@@ -65,7 +72,7 @@ export class BuildComponent implements OnInit {
     event.stopPropagation();
     const dialogRef = this.dialog.open(BuildNameDialogComponent, {
       data: currentBuildName,
-      panelClass: 'dark',
+      panelClass: this.themeService.themeSignal(),
     });
     dialogRef.afterClosed().subscribe((buildName: string) => {
       if (buildName && buildName.trim().length != 0) {
@@ -77,6 +84,7 @@ export class BuildComponent implements OnInit {
     event.stopPropagation();
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: `Are you sure you want to delete ${buildName}?`,
+      panelClass: this.themeService.themeSignal(),
     });
     dialogRef.afterClosed().subscribe((confirmation: boolean) => {
       if (confirmation) {
