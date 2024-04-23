@@ -32,4 +32,8 @@ export class NavbarComponent {
   getTheme(): string {
     return this.themeService.themeSignal();
   }
+
+  setPrimaryColorIfLightMode(): string {
+    return this.themeService.setPrimaryColorIfLightMode();
+  }
 }

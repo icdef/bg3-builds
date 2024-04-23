@@ -24,7 +24,7 @@ $light-theme: mat.define-light-theme(
 );
 
 // Dark Theme
-$dark-theme-primary: mat.define-palette(mat.$blue-grey-palette);
+$dark-theme-primary: mat.define-palette(mat.$cyan-palette);
 $dark-theme-accent: mat.define-palette(mat.$green-palette);
 $dark-theme-warn: mat.define-palette(mat.$red-palette);
 

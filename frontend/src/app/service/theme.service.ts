@@ -13,4 +13,7 @@ export class ThemeService {
   toggleTheme() {
     this.themeSignal.update((value) => (value === 'dark' ? 'light' : 'dark'));
   }
+  setPrimaryColorIfLightMode(): string {
+    return this.themeSignal() === 'light' ? 'primary' : '';
+  }
 }
