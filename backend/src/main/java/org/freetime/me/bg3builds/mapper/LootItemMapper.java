@@ -14,7 +14,7 @@ import java.util.List;
         uses = LootItemDetailMapper.class)
 public interface LootItemMapper {
 
-    LootItem updateLootItem(LootItem newItem, @MappingTarget LootItem oldItem);
+    LootItem updateLootItem(LootItem newItem, @MappingTarget LootItem toUpdate);
 
     LootItemDto entityToDto(LootItem lootItem);
 

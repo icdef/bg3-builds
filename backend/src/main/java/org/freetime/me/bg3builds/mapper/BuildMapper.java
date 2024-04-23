@@ -13,7 +13,7 @@ import java.util.List;
         uses = {LootItemMapper.class, BuildLootItemMapper.class})
 public interface BuildMapper {
 
-    Build updateBuild(Build newBuild, @MappingTarget Build oldBuild);
+    void updateBuild(Build newBuild, @MappingTarget Build toUpdateBuild);
 
     BuildDto entityToDto(Build build);
 

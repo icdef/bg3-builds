@@ -33,20 +33,17 @@ public class DummyBuildGenerator {
     public void generateDummyBuild() {
         Build build = new Build();
         build.setName("Build 1");
-        List<LootItem> lootItems = lootItemRepository.findAll();
-        Collections.shuffle(lootItems);
-        List<BuildLootItem> buildLootItems = new ArrayList<>();
-        for (int i = 0; i < Math.min(10, lootItems.size()); i++) {
-            buildLootItems.add(createBuildLootItem(build, lootItems, i));
-        }
-
-        build.setItems(buildLootItems);
         Optional<Build> optionalBuild = buildRepository.findByName(build.getName());
-        if (optionalBuild.isPresent())
-            buildRepository.save(buildMapper.updateBuild(build, optionalBuild.get()));
-        else
+        if (optionalBuild.isEmpty()) {
+            List<LootItem> lootItems = lootItemRepository.findAll();
+            Collections.shuffle(lootItems);
+            List<BuildLootItem> buildLootItems = new ArrayList<>();
+            for (int i = 0; i < Math.min(10, lootItems.size()); i++) {
+                buildLootItems.add(createBuildLootItem(build, lootItems, i));
+            }
+            build.setItems(buildLootItems);
             buildRepository.save(build);
-        buildLootItemRepository.saveAll(buildLootItems);
+        }
 
     }
 
