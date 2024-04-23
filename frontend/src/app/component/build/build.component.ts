@@ -65,6 +65,7 @@ export class BuildComponent implements OnInit {
     event.stopPropagation();
     const dialogRef = this.dialog.open(BuildNameDialogComponent, {
       data: currentBuildName,
+      panelClass: 'dark',
     });
     dialogRef.afterClosed().subscribe((buildName: string) => {
       if (buildName && buildName.trim().length != 0) {

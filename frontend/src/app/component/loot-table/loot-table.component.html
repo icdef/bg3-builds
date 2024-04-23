@@ -30,7 +30,9 @@
     </mat-button-toggle>
     <mat-menu #equipmentMenu="matMenu">
       <ng-container *ngFor="let type of equipmentTypes">
-        <button mat-menu-item (click)="equipmentOnly(type)">{{ type }}</button>
+        <button mat-menu-item (click)="equipmentOnly(type)">
+          {{ type }}
+        </button>
       </ng-container>
     </mat-menu>
   </mat-button-toggle-group>
