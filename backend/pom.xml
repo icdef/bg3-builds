@@ -76,7 +76,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <name>icdef/bg3-build-backend:v3</name>
+                        <name>icdef/bg3-build-backend:v4</name>
                     </image>
                 </configuration>
             </plugin>
