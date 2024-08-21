@@ -5,6 +5,7 @@ services:
     image: postgres
     container_name: local_pgdb
     restart: always
+    user: postgres
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
