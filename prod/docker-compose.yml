@@ -11,6 +11,7 @@ services:
   backend-prod:
     image: icdef/bg3-build-backend:v4
     container_name: backend
+    pull_policy: always
     depends_on:
       db-prod:
         condition: service_healthy
@@ -18,12 +19,13 @@ services:
       - "8080:8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://local_pgdb:5432/postgres
-      - SPRING_PROFILES_ACTIVE=fetch-data
+      #      - SPRING_PROFILES_ACTIVE=fetch-data
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=update
     healthcheck:
-      test: [ "CMD-SHELL", "THC_PATH=/actuator/health /cnb/process/health-check || exit 1" ]
+      test: [ "CMD-SHELL", "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1" ]
       interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 20
 
   db-prod:
     image: postgres
@@ -53,7 +55,8 @@ services:
       PGADMIN_DEFAULT_EMAIL: postgres-admin@gmail.com
       PGADMIN_DEFAULT_PASSWORD: postgres
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
+      - pgadmin-data-prod:/var/lib/pgadmin
 
 volumes:
   db-prod:
+  pgadmin-data-prod:

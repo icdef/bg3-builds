@@ -2,9 +2,9 @@ FROM node:alpine
 
 WORKDIR /usr/src/app
 
-COPY frontend /usr/src/app
-
 RUN npm install -g @angular/cli
+
+COPY frontend /usr/src/app
 
 RUN npm install
 
