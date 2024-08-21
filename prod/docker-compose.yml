@@ -11,7 +11,6 @@ services:
   backend-prod:
     image: icdef/bg3-build-backend:v4
     container_name: backend
-    pull_policy: always
     depends_on:
       db-prod:
         condition: service_healthy
