@@ -52,7 +52,8 @@ public enum LootItemType {
     MEDIUM_ARMOUR("Medium Armour", LootItemTypeKind.EQUIPMENT.getTypeName()),
     RINGS("Rings", LootItemTypeKind.EQUIPMENT.getTypeName()),
     SHIELDS("Shields", LootItemTypeKind.EQUIPMENT.getTypeName()),
-    UNDERWEAR("Underwear", LootItemTypeKind.EQUIPMENT.getTypeName());
+    UNDERWEAR("Underwear", LootItemTypeKind.EQUIPMENT.getTypeName()),
+    MUSICAL_INSTRUMENTS("Musical Instruments", LootItemTypeKind.EQUIPMENT.getTypeName());
 
     private final String typeName;
     private final String typeKind;

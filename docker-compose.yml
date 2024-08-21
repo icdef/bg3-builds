@@ -1,18 +1,4 @@
-version: '3.8'
 services:
-
-  db:
-    image: postgres
-    container_name: local_pgdb
-    restart: always
-    user: postgres
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - '5432:5432'
-    volumes:
-      - db:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4
@@ -25,7 +11,13 @@ services:
       PGADMIN_DEFAULT_PASSWORD: postgres
     volumes:
       - pgadmin-data:/var/lib/pgadmin
+    networks:
+      - prod_default
 
 volumes:
   db:
   pgadmin-data:
+
+networks:
+  prod_default:
+    external: true

@@ -18,7 +18,7 @@ services:
       - "8080:8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://local_pgdb:5432/postgres
-  #      - SPRING_PROFILES_ACTIVE=fetch-data
+      - SPRING_PROFILES_ACTIVE=fetch-data
     healthcheck:
       test: [ "CMD-SHELL", "THC_PATH=/actuator/health /cnb/process/health-check || exit 1" ]
       interval: 10s
