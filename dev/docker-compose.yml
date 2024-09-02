@@ -24,11 +24,50 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
 
-#  elasticsearch:
-#    container_name: elasticsearch
-#    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
-#    ports:
-#      - '9200:9200'
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    ports:
+      - '9200:9200'
+    environment:
+      - ELASTIC_PASSWORD=elastic
+      - discovery.type=single-node
+      - xpack.security.http.ssl.enabled=false
+      - xpack.license.self_generated.type=basic
+
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -u elastic:elastic --fail --silent localhost:9200/_cluster/health | grep green || exit 1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # before this runs i need to execute somehow
+  #curl -u elastic:elastic -X POST http://localhost:9200/_security/user/kibana_system/_password -d '{"password":"kibana"}' -H 'Content-Type: application/json'
+  init-kibana:
+    image: curlimages/curl:8.9.1
+    entrypoint: [ "sh", "-c", "curl -u elastic:elastic -X POST http://elasticsearch:9200/_security/user/kibana_system/_password -d '{\"password\":\"kibana\"}' -H 'Content-Type: application/json'" ]
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:8.15.0
+    depends_on:
+      init-kibana:
+        condition: service_completed_successfully
+    ports:
+      - '5601:5601'
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=kibana
+      - "xpack.security.enabled=false"
+      - "xpack.license.self_generated.type=basic"
+
+
+
 
 
 volumes:
